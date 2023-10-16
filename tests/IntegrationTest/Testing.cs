@@ -4,17 +4,16 @@ using Infrastructure.Context;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
-using Newtonsoft.Json;
 
 namespace IntegrationTest;
 
 public class Testing
 {
-
     private static WebApplicationFactory<Program> _factory = null!;
-    // private static IConfiguration _configuration = null!;
+    private static IConfiguration _configuration = null!;
     private static IServiceScopeFactory _scopeFactory = null!;
 
     //public readonly IAuthService _authService;
@@ -81,10 +80,12 @@ public class Testing
         return await context.Set<TEntity>().CountAsync();
     }
 
+
+
     //public async Task<HttpClient> CreateHttpClient()
     //{
-        // using var application = new CustomWebApplicationFactory();
-        // using var client = application.CreateClient();
+    // using var application = new CustomWebApplicationFactory();
+    // using var client = application.CreateClient();
 
     //    var user = new UserAuthenticationDto
     //    {

@@ -1,6 +1,7 @@
-﻿using System.Net.Http.Json;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Application.Common.Interfaces;
+using Application.Common.Models;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 
@@ -13,11 +14,13 @@ public record FetchAbilityCommand : IRequest<bool>
 
 public class FetchAbilityCommandHandler : IRequestHandler<FetchAbilityCommand, bool>
 {
+    private readonly IMapper _mapper;
     private readonly IDataContext _context;
 
-    public FetchAbilityCommandHandler(IDataContext context)
+    public FetchAbilityCommandHandler(IDataContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task<bool> Handle(FetchAbilityCommand request, CancellationToken cancellationToken)
@@ -25,7 +28,7 @@ public class FetchAbilityCommandHandler : IRequestHandler<FetchAbilityCommand, b
         try
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync("https://pokeapi.co/api/v2/ability/999999999999");
+            var response = await client.GetAsync("https://pokeapi.co/api/v2/ability?limit=9999999", cancellationToken);
 
             if (response.IsSuccessStatusCode)
             {
@@ -35,14 +38,16 @@ public class FetchAbilityCommandHandler : IRequestHandler<FetchAbilityCommand, b
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 };
 
-                var abilities = await response.Content.ReadFromJsonAsync<List<AbilityEntity>>(jsonOptions, cancellationToken: cancellationToken);
+                var content = await response.Content.ReadAsStringAsync(cancellationToken) ?? string.Empty;
 
-                if (abilities is null)
+                if (string.IsNullOrEmpty(content))
                     return false;
 
-                _context.Abilities.AddRange(abilities);
-                await _context.SaveChangesAsync(cancellationToken);
+                var genericContent = JsonSerializer.Deserialize<GenericResponse>(content, jsonOptions) ?? new GenericResponse();
+                var abilityEntities = _mapper.Map<List<AbilityEntity>>(genericContent.Results);
 
+                _context.Abilities.AddRange(abilityEntities);
+                await _context.SaveChangesAsync(cancellationToken);
             }
 
             return true;

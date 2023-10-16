@@ -1,27 +1,26 @@
+using Application;
+
 namespace IntegrationTest.Application.UseCases;
 
 [TestClass]
-public class FetchAbilityIntegrationTest : IClassFixture<CustomWebApplicationFactory<Startup>>
+public class FetchAbilityIntegrationTest : Testing
 {
-    private readonly CustomWebApplicationFactory<Startup> _factory;
-
-    public FetchAbilityIntegrationTest(CustomWebApplicationFactory<Startup> factory)
+    [TestInitialize]
+    public void TestInitialize()
     {
-        _factory = factory;
+
     }
 
-    [Fact]
-    public async Task FetchAbilityCommand_ShouldReturnTrue()
+    [TestMethod]
+    public async Task FetchAbility()
     {
-        // Arrange
-        var client = _factory.CreateClient();
+        var command = new FetchAbilityCommand
+        {
 
-        // Act
-        var response = await client.GetAsync("/api/ability");
+        };
 
-        // Assert
-        response.EnsureSuccessStatusCode();
-        var responseString = await response.Content.ReadAsStringAsync();
-        Assert.Equal("true", responseString);
+        var result = await SendAsync(command);
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result);
     }
 }

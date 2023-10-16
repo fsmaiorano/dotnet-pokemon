@@ -2,7 +2,6 @@
 
 namespace Application.Common.Models;
 
-
 public class PaginatedList<T>
 {
     public IReadOnlyCollection<T> Items { get; }

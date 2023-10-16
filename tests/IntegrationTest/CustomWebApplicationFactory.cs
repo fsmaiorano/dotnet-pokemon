@@ -14,12 +14,13 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
         builder.ConfigureAppConfiguration(configurationBuilder =>
         {
-            var integrationConfig = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables()
+            var solutionPath = GetSolutionPath();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(solutionPath.FullName)
+                .AddJsonFile("src/Api/appsettings.json", optional: false)
                 .Build();
 
-            configurationBuilder.AddConfiguration(integrationConfig);
+            configurationBuilder.AddConfiguration(builder);
         });
 
         builder.ConfigureServices((builder, services) =>
@@ -31,5 +32,16 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
             services.AddSingleton<IConfiguration>(builder.Configuration);
         });
+    }
+
+    private static DirectoryInfo GetSolutionPath(string currentPath = null!)
+    {
+        var directory = new DirectoryInfo(
+            currentPath ?? Directory.GetCurrentDirectory());
+        while (directory != null && !directory.GetFiles("*.sln").Any())
+        {
+            directory = directory.Parent;
+        }
+        return directory!;
     }
 }
