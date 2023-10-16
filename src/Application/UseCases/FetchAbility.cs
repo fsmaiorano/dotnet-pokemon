@@ -1,60 +1,52 @@
-﻿using System.Text.Json;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Common.Models;
+using Application.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Serilog;
 
-namespace Application;
+namespace Application.UseCases;
 
-public record FetchAbilityCommand : IRequest<bool>
+public record FetchAbilityCommand : IRequest
 {
 
 }
 
-public class FetchAbilityCommandHandler : IRequestHandler<FetchAbilityCommand, bool>
+public class FetchAbilityCommandHandler : IRequestHandler<FetchAbilityCommand>
 {
     private readonly IMapper _mapper;
     private readonly IDataContext _context;
+    private readonly ILogger _logger = Log.ForContext<FetchAbilityCommandHandler>();
 
-    public FetchAbilityCommandHandler(IDataContext context, IMapper mapper)
+    public FetchAbilityCommandHandler(IDataContext context, IMapper mapper, ILogger logger)
     {
         _context = context;
         _mapper = mapper;
+        _logger = logger;
     }
 
-    public async Task<bool> Handle(FetchAbilityCommand request, CancellationToken cancellationToken)
+    public async Task Handle(FetchAbilityCommand request, CancellationToken cancellationToken)
     {
+        _logger.Information($"Fetching abilities started at {DateTime.Now}");
+
         try
         {
-            using var client = new HttpClient();
-            var response = await client.GetAsync("https://pokeapi.co/api/v2/ability?limit=9999999", cancellationToken);
+            var content = await HttpHelper.GetAsync<GenericResponse>("https://pokeapi.co/api/v2/ability?limit=9999999", cancellationToken);
 
-            if (response.IsSuccessStatusCode)
+            if (content is not null)
             {
-                var jsonOptions = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-
-                var content = await response.Content.ReadAsStringAsync(cancellationToken) ?? string.Empty;
-
-                if (string.IsNullOrEmpty(content))
-                    return false;
-
-                var genericContent = JsonSerializer.Deserialize<GenericResponse>(content, jsonOptions) ?? new GenericResponse();
-                var abilityEntities = _mapper.Map<List<AbilityEntity>>(genericContent.Results);
-
-                _context.Abilities.AddRange(abilityEntities);
+                _context.Abilities.AddRange(_mapper.Map<List<AbilityEntity>>(content.Results));
                 await _context.SaveChangesAsync(cancellationToken);
             }
-
-            return true;
         }
         catch (Exception ex)
         {
-            throw new Exception("Unable to fetch ability", ex);
+            _logger.Error(ex, $"Error while fetching abilities at {DateTime.Now}");
+        }
+        finally
+        {
+            _logger.Information($"Fetching abilities completed at {DateTime.Now}");
         }
     }
 }
