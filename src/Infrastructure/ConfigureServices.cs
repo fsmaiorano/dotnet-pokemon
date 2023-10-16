@@ -16,12 +16,13 @@ public static class ConfigureServices
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddScoped<IDataContext>(provider => provider.GetRequiredService<DataContext>());
-        
+
         if (!AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))
         {
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+                // options.UseNpgsql("Server=localhost;Port=5432;Database=database-pokemon-pg;User Id=postgres;Password=postgres;");
             });
         }
 

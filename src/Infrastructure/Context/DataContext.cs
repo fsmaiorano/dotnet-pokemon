@@ -56,23 +56,19 @@ public class DataContext : DbContext, IDataContext
         optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
 
         if (AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))
-        {
             optionsBuilder.UseInMemoryDatabase("BlogDb");
-        }
         else
         {
-            if (!string.IsNullOrEmpty(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                Console.WriteLine($"Using SQL Server - ConnectionString: {_configuration.GetConnectionString("DefaultConnection")}");
-                optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"),
-                    builder => builder.MigrationsAssembly(typeof(DataContext).Assembly.FullName));
-            }
-            else
-            {
-                Console.WriteLine($"Using SQL Server - ConnectionString: {_configuration.GetConnectionString("DefaultConnection")}");
-                optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"),
-                    builder => builder.MigrationsAssembly(typeof(DataContext).Assembly.FullName));
-            }
+            var solutionPath = GetSolutionPath();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(solutionPath.FullName)
+                .AddJsonFile("src/Api/appsettings.json", optional: false)
+                .Build();
+
+            var connectionString = builder.GetConnectionString("DefaultConnection");
+            Console.WriteLine($"Using SQL Server - ConnectionString: {connectionString}");
+            optionsBuilder.UseNpgsql(connectionString,
+                builder => builder.MigrationsAssembly(typeof(DataContext).Assembly.FullName));
         }
 
         base.OnConfiguring(optionsBuilder);
