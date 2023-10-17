@@ -1,11 +1,11 @@
-using Application;
+﻿using Application;
 using Application.UseCases;
 using Domain.Entities;
 
 namespace IntegrationTest.Application.UseCases;
 
 [TestClass]
-public class FetchAbilityIntegrationTest : Testing
+public class FetchPokemonIntegrationTest : Testing
 {
     [TestInitialize]
     public void TestInitialize()
@@ -14,15 +14,15 @@ public class FetchAbilityIntegrationTest : Testing
     }
 
     [TestMethod]
-    public async Task FetchAbility()
+    public async Task FetchPokemon()
     {
-        var command = new FetchAbilityCommand
+        var command = new FetchPokemonCommand
         {
 
         };
 
         await SendAsync(command);
-        var counter = await CountAsync<AbilityEntity>();
+        var counter = await CountAsync<PokemonEntity>();
         Assert.IsTrue(counter > 0);
     }
 }

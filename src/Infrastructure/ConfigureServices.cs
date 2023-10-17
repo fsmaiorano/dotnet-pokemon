@@ -4,6 +4,7 @@ using Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Infrastructure;
 
@@ -23,6 +24,13 @@ public static class ConfigureServices
             {
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
                 // options.UseNpgsql("Server=localhost;Port=5432;Database=database-pokemon-pg;User Id=postgres;Password=postgres;");
+            });
+        }
+        else
+        {
+            services.AddDbContext<DataContext>(options =>
+            {
+                options.UseInMemoryDatabase("InMemoryDbForTesting");
             });
         }
 

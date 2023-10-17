@@ -1,11 +1,11 @@
-using Application;
+﻿using Application;
 using Application.UseCases;
 using Domain.Entities;
 
 namespace IntegrationTest.Application.UseCases;
 
 [TestClass]
-public class FetchAbilityIntegrationTest : Testing
+public class FetchMoveIntegrationTest : Testing
 {
     [TestInitialize]
     public void TestInitialize()
@@ -14,15 +14,15 @@ public class FetchAbilityIntegrationTest : Testing
     }
 
     [TestMethod]
-    public async Task FetchAbility()
+    public async Task FetchMove()
     {
-        var command = new FetchAbilityCommand
+        var command = new FetchMoveCommand
         {
 
         };
 
         await SendAsync(command);
-        var counter = await CountAsync<AbilityEntity>();
+        var counter = await CountAsync<MoveEntity>();
         Assert.IsTrue(counter > 0);
     }
 }

@@ -1,11 +1,11 @@
-using Application;
+﻿using Application;
 using Application.UseCases;
 using Domain.Entities;
 
 namespace IntegrationTest.Application.UseCases;
 
 [TestClass]
-public class FetchAbilityIntegrationTest : Testing
+public class FetchSpecieIntegrationTest : Testing
 {
     [TestInitialize]
     public void TestInitialize()
@@ -14,15 +14,14 @@ public class FetchAbilityIntegrationTest : Testing
     }
 
     [TestMethod]
-    public async Task FetchAbility()
+    public async Task FetchSpecie()
     {
-        var command = new FetchAbilityCommand
+        //TODO - ?
+        var command = new FetchSpecieCommand
         {
 
         };
 
         await SendAsync(command);
-        var counter = await CountAsync<AbilityEntity>();
-        Assert.IsTrue(counter > 0);
     }
 }

@@ -17,7 +17,7 @@ public static class HttpHelper
                 var jsonOptions = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 };
 
                 var content = await response.Content.ReadAsStringAsync(cancellationToken) ?? string.Empty;
@@ -30,8 +30,9 @@ public static class HttpHelper
 
             return default;
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine($"getAsync exception - {DateTime.Now} - {ex.Message}");
             throw;
         }
     }
@@ -47,7 +48,7 @@ public static class HttpHelper
             {
                 var jsonOptions = new JsonSerializerOptions
                 {
-                    PropertyNameCaseInsensitive = true,
+                    PropertyNameCaseInsensitive = false,
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 };
 
@@ -61,10 +62,12 @@ public static class HttpHelper
 
             return default;
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine($"postAsync exception - {DateTime.Now} - {ex.Message}");
             throw;
         }
+
     }
 
     public static async Task<T?> PutAsync<T>(string url, object? data, CancellationToken cancellationToken)
@@ -78,7 +81,7 @@ public static class HttpHelper
             {
                 var jsonOptions = new JsonSerializerOptions
                 {
-                    PropertyNameCaseInsensitive = true,
+                    PropertyNameCaseInsensitive = false,
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 };
 
@@ -92,8 +95,9 @@ public static class HttpHelper
 
             return default;
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine($"putAsync exception - {DateTime.Now} - {ex.Message}");
             throw;
         }
     }
@@ -109,7 +113,7 @@ public static class HttpHelper
             {
                 var jsonOptions = new JsonSerializerOptions
                 {
-                    PropertyNameCaseInsensitive = true,
+                    PropertyNameCaseInsensitive = false,
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 };
 
@@ -123,8 +127,9 @@ public static class HttpHelper
 
             return default;
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine($"deleteAsync exception - {DateTime.Now} - {ex.Message}");
             throw;
         }
     }
