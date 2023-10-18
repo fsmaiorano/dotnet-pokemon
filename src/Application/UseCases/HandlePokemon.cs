@@ -1,17 +1,16 @@
-﻿using System.Linq;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.UseCases;
 
-public record HandlePokemonCommand : IRequest
+public record HandlePokemonCommand : IRequest<List<Pokemon>>
 {
 
 }
 
-public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand>
+public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand, List<Pokemon>>
 {
     private readonly IMapper _mapper;
     private readonly IDataContext _context;
@@ -22,7 +21,7 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand>
         _mapper = mapper;
     }
 
-    public async Task Handle(HandlePokemonCommand request, CancellationToken cancellationToken)
+    public async Task<List<Pokemon>> Handle(HandlePokemonCommand request, CancellationToken cancellationToken)
     {
         Console.WriteLine($"handlePokemon start - {DateTime.Now}");
 
@@ -42,7 +41,7 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand>
                                 .Handle(new FetchDetailCommand { PokemonExternalId = pokemon.ExternalId }, cancellationToken);
 
                 if (pokemonDetail is null)
-                    return;
+                    break;
 
                 if (specie is not null)
                     pokemonDetail.EvolvesFrom = specie?.EvolvesFromSpecies?.ExternalId ?? 0;
@@ -69,6 +68,8 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand>
         {
             Console.WriteLine($"handlePokemon end - {DateTime.Now}");
         }
+
+        return pokemons;
     }
 
     private async Task FetchInformation()

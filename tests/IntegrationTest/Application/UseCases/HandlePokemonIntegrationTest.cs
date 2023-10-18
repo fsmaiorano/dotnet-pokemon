@@ -21,6 +21,8 @@ public class FetchHandlePokemonIntegrationTest : Testing
 
         };
 
-        await SendAsync(command);
+        var pokemons = await SendAsync(command);
+        Assert.IsTrue(pokemons is not null);
+        Assert.IsTrue(pokemons?.Count > 0);
     }
 }

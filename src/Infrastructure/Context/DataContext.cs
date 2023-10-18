@@ -10,8 +10,8 @@ namespace Infrastructure.Context;
 
 public class DataContext : DbContext, IDataContext
 {
-    private readonly IConfiguration _configuration;
-    private readonly IMediator _mediator;
+    // private readonly IConfiguration _configuration;
+    // private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
     public DataContext()
@@ -30,9 +30,9 @@ public class DataContext : DbContext, IDataContext
        IConfiguration configuration,
        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) : base(options)
     {
-        _mediator = mediator;
+        // _mediator = mediator;
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
-        _configuration = configuration;
+        // _configuration = configuration;
     }
 
     public DbSet<PokemonEntity> Pokemons => Set<PokemonEntity>();

@@ -1,6 +1,4 @@
-﻿using Application;
-using Application.UseCases;
-using Domain.Entities;
+﻿using Application.UseCases;
 
 namespace IntegrationTest.Application.UseCases;
 
@@ -16,12 +14,13 @@ public class FetchSpecieIntegrationTest : Testing
     [TestMethod]
     public async Task FetchSpecie()
     {
-        //TODO - ?
         var command = new FetchSpecieCommand
         {
-
+            PokemonExternalId = 1
         };
 
-        await SendAsync(command);
+        var specie = await SendAsync(command);
+        Assert.IsTrue(specie is not null);
+        Assert.IsTrue(specie?.Name == "bulbasaur");
     }
 }
