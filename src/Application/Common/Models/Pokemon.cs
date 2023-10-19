@@ -1,4 +1,5 @@
-﻿using Application.Common.Models;
+﻿using Domain.Entities;
+using Application.Common.Models;
 using AutoMapper;
 
 namespace Application;

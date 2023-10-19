@@ -14,13 +14,11 @@ public record FetchDetailCommand : IRequest<PokemonDetail?>
 
 public class FetchDetailCommandHandler : IRequestHandler<FetchDetailCommand, PokemonDetail?>
 {
-    private readonly IMapper _mapper;
     private readonly IDataContext _context;
 
-    public FetchDetailCommandHandler(IDataContext context, IMapper mapper)
+    public FetchDetailCommandHandler(IDataContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
     public async Task<PokemonDetail?> Handle(FetchDetailCommand request, CancellationToken cancellationToken)
@@ -37,7 +35,7 @@ public class FetchDetailCommandHandler : IRequestHandler<FetchDetailCommand, Pok
             {
                 detail.ExternalId = request.PokemonExternalId;
                 detail.Sprites = pokemon.Sprites;
-                detail.Types = await _context.Types.Where(t => t.ExternalId == request.PokemonExternalId).ToListAsync(cancellationToken);
+                detail.Types = await _context.Types.AsNoTracking().Where(t => t.ExternalId == request.PokemonExternalId).ToListAsync(cancellationToken);
                 detail.Height = pokemon.Height;
                 detail.Weight = pokemon.Weight;
             }

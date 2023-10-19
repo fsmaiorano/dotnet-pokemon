@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,33 +33,19 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
             await FetchInformation();
 
             var storedPokemons = await _context.Pokemons.ToListAsync(cancellationToken);
-            foreach (var pokemon in storedPokemons)
-            {
-                var specie = await new FetchSpecieCommandHandler(_context, _mapper)
-                                .Handle(new FetchSpecieCommand { PokemonExternalId = pokemon.ExternalId }, cancellationToken);
 
-                var pokemonDetail = await new FetchDetailCommandHandler(_context, _mapper)
-                                .Handle(new FetchDetailCommand { PokemonExternalId = pokemon.ExternalId }, cancellationToken);
+            var batches = storedPokemons.Select((x, i) => new { Index = i, Value = x })
+                                        .GroupBy(x => x.Index / 100)
+                                        .Select(x => x.Select(v => v.Value).ToList())
+                                        .ToList();
 
-                if (pokemonDetail is null)
-                    break;
+            var tasks = batches.Select(x => HandlePokemon(x, cancellationToken));
 
-                if (specie is not null)
-                    pokemonDetail.EvolvesFrom = specie?.EvolvesFromSpecies?.ExternalId ?? 0;
+            var results = await Task.WhenAll(tasks);
 
-                var pokemonDto = new Pokemon
-                {
-                    Id = pokemon.ExternalId,
-                    Name = pokemon.Name,
-                    Height = pokemonDetail.Height,
-                    Weight = pokemonDetail.Weight,
-                    EvolvesFrom = pokemonDetail.EvolvesFrom,
-                    Sprites = pokemonDetail.Sprites,
-                    Types = pokemonDetail?.Types?.Select(x => x.Name).ToList()
-                };
+            pokemons = results.SelectMany(x => x).ToList();
 
-                pokemons.Add(pokemonDto);
-            }
+            Console.WriteLine($"handlePokemon success - {DateTime.Now}");
         }
         catch (Exception ex)
         {
@@ -67,6 +54,41 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
         finally
         {
             Console.WriteLine($"handlePokemon end - {DateTime.Now}");
+        }
+
+        return pokemons;
+    }
+
+    private async Task<List<Pokemon>> HandlePokemon(List<PokemonEntity> pokemonEntities, CancellationToken cancellationToken)
+    {
+        List<Pokemon> pokemons = new();
+
+        foreach (var pokemon in pokemonEntities)
+        {
+            var specie = await new FetchSpecieCommandHandler()
+                            .Handle(new FetchSpecieCommand { PokemonExternalId = pokemon.ExternalId }, cancellationToken);
+
+            var pokemonDetail = await new FetchDetailCommandHandler(_context)
+                            .Handle(new FetchDetailCommand { PokemonExternalId = pokemon.ExternalId }, cancellationToken);
+
+            if (pokemonDetail is null)
+                break;
+
+            if (specie is not null)
+                pokemonDetail.EvolvesFrom = specie?.EvolvesFromSpecies?.ExternalId ?? 0;
+
+            var pokemonDto = new Pokemon
+            {
+                Id = pokemon.ExternalId,
+                Name = pokemon.Name,
+                Height = pokemonDetail.Height,
+                Weight = pokemonDetail.Weight,
+                EvolvesFrom = pokemonDetail.EvolvesFrom,
+                Sprites = pokemonDetail.Sprites,
+                Types = pokemonDetail?.Types?.Select(x => x.Name).ToList()
+            };
+
+            pokemons.Add(pokemonDto);
         }
 
         return pokemons;

@@ -13,14 +13,9 @@ public record FetchSpecieCommand : IRequest<PokemonSpecie?>
 
 public class FetchSpecieCommandHandler : IRequestHandler<FetchSpecieCommand, PokemonSpecie?>
 {
-    //TODO - ?
-    private readonly IMapper _mapper;
-    private readonly IDataContext _context;
 
-    public FetchSpecieCommandHandler(IDataContext context, IMapper mapper)
+    public FetchSpecieCommandHandler()
     {
-        _context = context;
-        _mapper = mapper;
     }
 
     public async Task<PokemonSpecie?> Handle(FetchSpecieCommand request, CancellationToken cancellationToken)

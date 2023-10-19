@@ -67,6 +67,7 @@ public class DataContext : DbContext, IDataContext
 
             var connectionString = builder.GetConnectionString("DefaultConnection");
             Console.WriteLine($"Using SQL Server - ConnectionString: {connectionString}");
+
             optionsBuilder.UseNpgsql(connectionString,
                 builder => builder.MigrationsAssembly(typeof(DataContext).Assembly.FullName));
         }
