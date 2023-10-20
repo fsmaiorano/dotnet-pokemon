@@ -1,5 +1,7 @@
 using Application;
+using Application.UseCases;
 using Infrastructure;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,10 +31,24 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
+
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
+
+app.MapGet("/", async () =>
+{
+    var mediator = app.Services.GetService(typeof(ISender)) as ISender ?? throw new NullReferenceException("Mediator is null");
+
+    var command = new HandlePokemonCommand
+    {
+
+    };
+
+    await mediator.Send(command);
+});
 
 app.MapGet("/weatherforecast", () =>
 {

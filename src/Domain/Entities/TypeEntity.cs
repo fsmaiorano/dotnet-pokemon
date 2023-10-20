@@ -5,8 +5,6 @@ namespace Domain.Entities;
 public class TypeEntity
 {
     public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
     public int ExternalId { get; private set; }
     public string Name { get; private set; }
     public string Url { get; private set; }

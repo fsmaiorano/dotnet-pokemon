@@ -3,6 +3,7 @@ using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.UseCases;
 
@@ -15,11 +16,13 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
 {
     private readonly IMapper _mapper;
     private readonly IDataContext _context;
+    private readonly IServiceProvider _serviceProvider;
 
-    public HandlePokemonCommandHandler(IDataContext context, IMapper mapper)
+    public HandlePokemonCommandHandler(IDataContext context, IMapper mapper, IServiceProvider serviceProvider)
     {
         _context = context;
         _mapper = mapper;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task<List<Pokemon>> Handle(HandlePokemonCommand request, CancellationToken cancellationToken)
@@ -65,11 +68,13 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
 
         foreach (var pokemon in pokemonEntities)
         {
-            var specie = await new FetchSpecieCommandHandler()
-                            .Handle(new FetchSpecieCommand { PokemonExternalId = pokemon.ExternalId }, cancellationToken);
+            var sender = _serviceProvider.GetService<ISender>() ?? throw new ArgumentNullException(nameof(ISender));
 
-            var pokemonDetail = await new FetchDetailCommandHandler(_context)
-                            .Handle(new FetchDetailCommand { PokemonExternalId = pokemon.ExternalId }, cancellationToken);
+            var fetchSpecieCommand = new FetchSpecieCommandHandler();
+            var specie = await fetchSpecieCommand.Handle(new FetchSpecieCommand { PokemonExternalId = pokemon.ExternalId }, cancellationToken);
+
+            var fetchPokemonDetailCommand = new FetchDetailCommand { PokemonExternalId = pokemon.ExternalId };
+            var pokemonDetail = await sender.Send(fetchPokemonDetailCommand, cancellationToken);
 
             if (pokemonDetail is null)
                 break;
