@@ -27,7 +27,7 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             services
                 .Remove<DbContextOptions<DataContext>>()
-                .AddDbContext<DataContext>((sp, options) =>
+                .AddDbContextFactory<DataContext>((sp, options) =>
                     options.UseInMemoryDatabase("InMemoryDb"));
 
             services.AddSingleton<IConfiguration>(builder.Configuration);

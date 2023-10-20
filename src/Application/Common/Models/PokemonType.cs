@@ -1,11 +1,25 @@
-﻿namespace Application;
+﻿using System.Text.Json.Serialization;
 
-public class PokemonType
+namespace Application.Common.Models
 {
-    public IList<string> Types { get; private set; }
+    public record PokemonType
+        {
+        [JsonPropertyName("slot")]
+        public int Slot { get; set; }
+        [JsonPropertyName("type")]
+        public TypeObject? Type { get; set; }
 
-    public PokemonType(IList<string> types)
-    {
-        Types = types;
+        public class TypeObject
+        {
+            [JsonPropertyName("name")]
+            public string? Name { get; set; }
+            [JsonPropertyName("url")]
+            public string? Url { get; set; }
+        }
+
+        public PokemonType()
+        {
+            Type = new();
+        }
     }
 }

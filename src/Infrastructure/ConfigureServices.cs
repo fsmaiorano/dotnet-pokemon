@@ -22,13 +22,13 @@ public static class ConfigureServices
 
         if (!AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))
         {
-            services.AddDbContext<DataContext>(options =>
+            services.AddDbContextFactory<DataContext>(options =>
                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName)), ServiceLifetime.Transient);
         }
         else
         {
-            services.AddDbContext<DataContext>(options =>
+            services.AddDbContextFactory<DataContext>(options =>
             {
                 options.UseInMemoryDatabase("InMemoryDbForTesting");
             });

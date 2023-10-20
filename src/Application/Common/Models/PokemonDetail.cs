@@ -1,10 +1,10 @@
 ﻿using System.Text.Json.Serialization;
-using Domain.Entities;
 
 namespace Application.Common.Models;
 
 public class PokemonDetail
 {
+    [JsonPropertyName("id")]
     public int ExternalId { get; set; }
     [JsonPropertyName("height")]
     public int Height { get; set; }
@@ -13,7 +13,13 @@ public class PokemonDetail
     [JsonPropertyName("sprites")]
     public PokemonSprite? Sprites { get; set; }
     [JsonPropertyName("types")]
-    public List<TypeEntity>? Types { get; set; }
+    public List<PokemonType>? Types { get; set; }
     [JsonPropertyName("evolves_from_species")]
     public int? EvolvesFrom { get; set; }
+
+    public PokemonDetail()
+    {
+        Types = new();
+        Sprites = new();
+    }
 }

@@ -29,18 +29,15 @@ public class FetchDetailCommandHandler : IRequestHandler<FetchDetailCommand, Pok
 
         try
         {
-            using (_context as IDisposable)
-            {
-                var pokemon = await HttpHelper.GetAsync<PokemonDetail>($"https://pokeapi.co/api/v2/pokemon/{request.PokemonExternalId}", cancellationToken);
+            var pokemon = await HttpHelper.GetAsync<PokemonDetail>($"https://pokeapi.co/api/v2/pokemon/{request.PokemonExternalId}", cancellationToken);
 
-                if (pokemon is not null)
-                {
-                    detail.ExternalId = request.PokemonExternalId;
-                    detail.Sprites = pokemon.Sprites;
-                    detail.Types = await _context.Types.AsNoTracking().Where(t => t.ExternalId == request.PokemonExternalId).ToListAsync(cancellationToken);
-                    detail.Height = pokemon.Height;
-                    detail.Weight = pokemon.Weight;
-                }
+            if (pokemon is not null)
+            {
+                detail.ExternalId = request.PokemonExternalId;
+                detail.Sprites = pokemon.Sprites;
+                detail.Height = pokemon.Height;
+                detail.Weight = pokemon.Weight;
+                detail.Types = pokemon.Types;
             }
         }
         catch (Exception ex)

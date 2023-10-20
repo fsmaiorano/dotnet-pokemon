@@ -37,6 +37,8 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
 
             var storedPokemons = await _context.Pokemons.ToListAsync(cancellationToken);
 
+            // pokemons = await HandlePokemon(storedPokemons, cancellationToken);
+
             var batches = storedPokemons.Select((x, i) => new { Index = i, Value = x })
                                         .GroupBy(x => x.Index / 100)
                                         .Select(x => x.Select(v => v.Value).ToList())
@@ -90,7 +92,7 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
                 Weight = pokemonDetail.Weight,
                 EvolvesFrom = pokemonDetail.EvolvesFrom,
                 Sprites = pokemonDetail.Sprites,
-                Types = pokemonDetail?.Types?.Select(x => x.Name).ToList()
+                Types = pokemonDetail.Types?.Select(x => x.Type?.Name!).ToList() ?? new List<string>()
             };
 
             pokemons.Add(pokemonDto);
@@ -101,9 +103,18 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
 
     private async Task FetchInformation()
     {
-        await new FetchAbilityCommandHandler(_context, _mapper).Handle(new FetchAbilityCommand(), CancellationToken.None);
-        await new FetchPokemonCommandHandler(_context, _mapper).Handle(new FetchPokemonCommand(), CancellationToken.None);
-        await new FetchMoveCommandHandler(_context, _mapper).Handle(new FetchMoveCommand(), CancellationToken.None);
-        await new FetchTypeCommandHandler(_context, _mapper).Handle(new FetchTypeCommand(), CancellationToken.None);
+        var sender = _serviceProvider.GetService<ISender>() ?? throw new ArgumentNullException(nameof(ISender));
+
+        var fetchAbilityCommand = new FetchAbilityCommand();
+        await sender.Send(fetchAbilityCommand);
+
+        var fetchMoveCommand = new FetchMoveCommand();
+        await sender.Send(fetchMoveCommand);
+
+        var fetchTypeCommand = new FetchTypeCommand();
+        await sender.Send(fetchTypeCommand);
+
+        var fetchPokemonCommand = new FetchPokemonCommand();
+        await sender.Send(fetchPokemonCommand);
     }
 }
