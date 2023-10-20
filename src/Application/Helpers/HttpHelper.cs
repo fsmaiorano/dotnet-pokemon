@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Application.Helpers;
 
@@ -18,6 +19,7 @@ public static class HttpHelper
                 {
                     PropertyNameCaseInsensitive = true,
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
                 };
 
                 var content = await response.Content.ReadAsStringAsync(cancellationToken) ?? string.Empty;
@@ -27,6 +29,7 @@ public static class HttpHelper
 
                 return JsonSerializer.Deserialize<T>(content, jsonOptions) ?? default;
             }
+
 
             return default;
         }
@@ -48,8 +51,9 @@ public static class HttpHelper
             {
                 var jsonOptions = new JsonSerializerOptions
                 {
-                    PropertyNameCaseInsensitive = false,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                    PropertyNameCaseInsensitive = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
                 };
 
                 var content = await response.Content.ReadAsStringAsync(cancellationToken) ?? string.Empty;
@@ -81,8 +85,9 @@ public static class HttpHelper
             {
                 var jsonOptions = new JsonSerializerOptions
                 {
-                    PropertyNameCaseInsensitive = false,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                    PropertyNameCaseInsensitive = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
                 };
 
                 var content = await response.Content.ReadAsStringAsync(cancellationToken) ?? string.Empty;
@@ -113,8 +118,9 @@ public static class HttpHelper
             {
                 var jsonOptions = new JsonSerializerOptions
                 {
-                    PropertyNameCaseInsensitive = false,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                    PropertyNameCaseInsensitive = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
                 };
 
                 var content = await response.Content.ReadAsStringAsync(cancellationToken) ?? string.Empty;
