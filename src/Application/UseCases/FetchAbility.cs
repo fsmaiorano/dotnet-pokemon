@@ -4,6 +4,7 @@ using Application.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases;
 
@@ -16,16 +17,18 @@ public class FetchAbilityCommandHandler : IRequestHandler<FetchAbilityCommand>
 {
     private readonly IMapper _mapper;
     private readonly IDataContext _context;
+    private readonly ILogger<FetchAbilityCommandHandler> _logger;
 
-    public FetchAbilityCommandHandler(IDataContext context, IMapper mapper)
+    public FetchAbilityCommandHandler(IDataContext context, IMapper mapper, ILogger<FetchAbilityCommandHandler> logger)
     {
         _context = context;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task Handle(FetchAbilityCommand request, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"fetchAbility start - {DateTime.Now}");
+        _logger.LogInformation($"fetchAbility start - {DateTime.Now}");
 
         try
         {
@@ -39,11 +42,11 @@ public class FetchAbilityCommandHandler : IRequestHandler<FetchAbilityCommand>
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"fetchAbility exception - {DateTime.Now} - {ex.Message}");
+            _logger.LogInformation($"fetchAbility exception - {DateTime.Now} - {ex.Message}");
         }
         finally
         {
-            Console.WriteLine($"fetchAbility end - {DateTime.Now}");
+            _logger.LogInformation($"fetchAbility end - {DateTime.Now}");
         }
     }
 }

@@ -4,6 +4,7 @@ using Application.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases;
 
@@ -16,16 +17,18 @@ public class FetchPokemonCommandHandler : IRequestHandler<FetchPokemonCommand>
 {
     private readonly IMapper _mapper;
     private readonly IDataContext _context;
+    private readonly ILogger<FetchPokemonCommandHandler> _logger;
 
-    public FetchPokemonCommandHandler(IDataContext context, IMapper mapper)
+    public FetchPokemonCommandHandler(IDataContext context, IMapper mapper, ILogger<FetchPokemonCommandHandler> logger)
     {
         _context = context;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task Handle(FetchPokemonCommand request, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"fetchPokemon start - {DateTime.Now}");
+         _logger.LogInformation($"fetchPokemon start - {DateTime.Now}");
 
         try
         {
@@ -39,11 +42,11 @@ public class FetchPokemonCommandHandler : IRequestHandler<FetchPokemonCommand>
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"fetchPokemon exception - {DateTime.Now} - {ex.Message}");
+             _logger.LogInformation($"fetchPokemon exception - {DateTime.Now} - {ex.Message}");
         }
         finally
         {
-            Console.WriteLine($"fetchPokemon end - {DateTime.Now}");
+             _logger.LogInformation($"fetchPokemon end - {DateTime.Now}");
         }
     }
 }

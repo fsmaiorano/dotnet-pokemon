@@ -1,9 +1,8 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Helpers;
-using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases;
 
@@ -15,15 +14,17 @@ public record FetchDetailCommand : IRequest<PokemonDetail?>
 public class FetchDetailCommandHandler : IRequestHandler<FetchDetailCommand, PokemonDetail?>
 {
     private readonly IDataContext _context;
+    private readonly ILogger<FetchDetailCommandHandler> _logger;
 
-    public FetchDetailCommandHandler(IDataContext context)
+    public FetchDetailCommandHandler(IDataContext context, ILogger<FetchDetailCommandHandler> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<PokemonDetail?> Handle(FetchDetailCommand request, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"fetchDetail start - {DateTime.Now}");
+        _logger.LogInformation($"fetchDetail start - {DateTime.Now}");
 
         PokemonDetail? detail = new();
 
@@ -42,11 +43,11 @@ public class FetchDetailCommandHandler : IRequestHandler<FetchDetailCommand, Pok
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"fetchDetail exception - {DateTime.Now} - {ex.Message}");
+            _logger.LogInformation($"fetchDetail exception - {DateTime.Now} - {ex.Message}");
         }
         finally
         {
-            Console.WriteLine($"fetchDetail end - {DateTime.Now}");
+            _logger.LogInformation($"fetchDetail end - {DateTime.Now}");
         }
 
         return detail;

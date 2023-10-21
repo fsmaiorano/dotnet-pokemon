@@ -1,8 +1,7 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Models;
+﻿using Application.Common.Models;
 using Application.Helpers;
-using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases;
 
@@ -13,14 +12,16 @@ public record FetchSpecieCommand : IRequest<PokemonSpecie?>
 
 public class FetchSpecieCommandHandler : IRequestHandler<FetchSpecieCommand, PokemonSpecie?>
 {
+    private readonly ILogger<FetchSpecieCommandHandler> _logger;
 
-    public FetchSpecieCommandHandler()
+    public FetchSpecieCommandHandler(ILogger<FetchSpecieCommandHandler> logger)
     {
+        _logger = logger;
     }
 
     public async Task<PokemonSpecie?> Handle(FetchSpecieCommand request, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"fetchSpecie start - {DateTime.Now}");
+        _logger.LogInformation($"fetchSpecie start - {DateTime.Now}");
 
         PokemonSpecie? content = new();
 
@@ -30,11 +31,11 @@ public class FetchSpecieCommandHandler : IRequestHandler<FetchSpecieCommand, Pok
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"fetchSpecie exception - {DateTime.Now} - {ex.Message}");
+            _logger.LogInformation($"fetchSpecie exception - {DateTime.Now} - {ex.Message}");
         }
         finally
         {
-            Console.WriteLine($"fetchSpecie end - {DateTime.Now}");
+            _logger.LogInformation($"fetchSpecie end - {DateTime.Now}");
         }
 
         return content;

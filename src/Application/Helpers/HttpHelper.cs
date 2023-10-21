@@ -33,9 +33,8 @@ public static class HttpHelper
 
             return default;
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"getAsync exception - {DateTime.Now} - {ex.Message}");
             throw;
         }
     }
@@ -66,9 +65,8 @@ public static class HttpHelper
 
             return default;
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"postAsync exception - {DateTime.Now} - {ex.Message}");
             throw;
         }
 
@@ -100,9 +98,8 @@ public static class HttpHelper
 
             return default;
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"putAsync exception - {DateTime.Now} - {ex.Message}");
             throw;
         }
     }
@@ -133,9 +130,8 @@ public static class HttpHelper
 
             return default;
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"deleteAsync exception - {DateTime.Now} - {ex.Message}");
             throw;
         }
     }

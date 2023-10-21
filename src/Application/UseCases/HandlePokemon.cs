@@ -4,6 +4,7 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases;
 
@@ -17,17 +18,19 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
     private readonly IMapper _mapper;
     private readonly IDataContext _context;
     private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<HandlePokemonCommandHandler> _logger;
 
-    public HandlePokemonCommandHandler(IDataContext context, IMapper mapper, IServiceProvider serviceProvider)
+    public HandlePokemonCommandHandler(IDataContext context, IMapper mapper, IServiceProvider serviceProvider, ILogger<HandlePokemonCommandHandler> logger)
     {
         _context = context;
         _mapper = mapper;
         _serviceProvider = serviceProvider;
+        _logger = logger;
     }
 
     public async Task<List<Pokemon>> Handle(HandlePokemonCommand request, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"handlePokemon start - {DateTime.Now}");
+        _logger.LogInformation($"handlePokemon start - {DateTime.Now}");
 
         List<Pokemon> pokemons = new();
 
@@ -50,15 +53,15 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
 
             pokemons = results.SelectMany(x => x).ToList();
 
-            Console.WriteLine($"handlePokemon success - {DateTime.Now}");
+             _logger.LogInformation($"handlePokemon success - {DateTime.Now}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"handlePokemon exception - {DateTime.Now} - {ex.Message}");
+             _logger.LogInformation($"handlePokemon exception - {DateTime.Now} - {ex.Message}");
         }
         finally
         {
-            Console.WriteLine($"handlePokemon end - {DateTime.Now}");
+             _logger.LogInformation($"handlePokemon end - {DateTime.Now}");
         }
 
         return pokemons;
@@ -72,8 +75,8 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
         {
             var sender = _serviceProvider.GetService<ISender>() ?? throw new ArgumentNullException(nameof(ISender));
 
-            var fetchSpecieCommand = new FetchSpecieCommandHandler();
-            var specie = await fetchSpecieCommand.Handle(new FetchSpecieCommand { PokemonExternalId = pokemon.ExternalId }, cancellationToken);
+            var fetchSpecieCommand = new FetchSpecieCommand();
+            var specie = await sender.Send(new FetchSpecieCommand { PokemonExternalId = pokemon.ExternalId }, cancellationToken);
 
             var fetchPokemonDetailCommand = new FetchDetailCommand { PokemonExternalId = pokemon.ExternalId };
             var pokemonDetail = await sender.Send(fetchPokemonDetailCommand, cancellationToken);
