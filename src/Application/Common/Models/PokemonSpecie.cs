@@ -3,14 +3,16 @@
 namespace Application.Common.Models;
 public class PokemonSpecie
 {
+    [JsonPropertyName("id")]
+    public int? Id { get; set; }
     [JsonPropertyName("name")]
     public string? Name { get; set; }
 
     [JsonPropertyName("base_happiness")]
-    public int BaseHappiness { get; set; }
+    public int? BaseHappiness { get; set; }
 
     [JsonPropertyName("capture_rate")]
-    public int CaptureRate { get; set; }
+    public int? CaptureRate { get; set; }
 
     [JsonPropertyName("color")]
     public GenericContent? Color { get; set; }
@@ -22,10 +24,7 @@ public class PokemonSpecie
     public bool HasGenderDifferences { get; set; }
 
     [JsonPropertyName("hatch_counter")]
-    public int HatchCounter { get; set; }
-
-    [JsonPropertyName("id")]
-    public int Id { get; set; }
+    public int? HatchCounter { get; set; }
 
     [JsonPropertyName("is_baby")]
     public bool IsBaby { get; set; }

@@ -20,7 +20,6 @@ public static class HttpHelper
                     PropertyNameCaseInsensitive = true,
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                    IncludeFields = true
                 };
 
                 var content = await response.Content.ReadAsStringAsync(cancellationToken) ?? string.Empty;

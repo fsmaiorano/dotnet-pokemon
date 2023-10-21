@@ -56,7 +56,7 @@ public class DataContext : DbContext, IDataContext
         optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
 
         if (AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))
-            optionsBuilder.UseInMemoryDatabase("BlogDb");
+            optionsBuilder.UseInMemoryDatabase("ApplicationDb");
         else
         {
             var solutionPath = GetSolutionPath();
