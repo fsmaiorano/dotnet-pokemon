@@ -3,7 +3,7 @@
 namespace Application.Common.Models
 {
     public record PokemonType
-        {
+    {
         [JsonPropertyName("slot")]
         public int Slot { get; set; }
         [JsonPropertyName("type")]

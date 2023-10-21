@@ -33,14 +33,16 @@ app.UseHttpsRedirection();
 
 var mediator = app.Services.GetService(typeof(ISender)) as ISender ?? throw new NullReferenceException("Mediator is null");
 
-app.MapGet("/", async () =>
+app.MapGet("/seed", async () =>
 {
     var command = new HandlePokemonCommand
     {
 
     };
 
-    await mediator.Send(command);
+    var response = await mediator.Send(command);
+    return Results.Ok();
+
 }).WithName("Root").WithOpenApi();
 
 app.Run();

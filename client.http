@@ -1,0 +1,6 @@
+@baseUrl = http://localhost:5268
+
+###
+# @name Get pokemons
+GET {{baseUrl}}/seed
+Content-Type: application/json
