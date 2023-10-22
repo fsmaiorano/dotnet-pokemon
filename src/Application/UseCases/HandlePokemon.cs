@@ -56,6 +56,11 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
             {
                 foreach (var pokemon in pokemons)
                 {
+                    var pokemonEntity = await _context.Pokemons.FirstOrDefaultAsync(x => x.ExternalId == pokemon.Id, cancellationToken);
+
+                    if (pokemonEntity is null)
+                        break;
+
                     var typeEntity = new List<TypeEntity>();
                     var types = pokemon.Types?.Select(x => x.Type).ToList();
                     if (types is not null)
@@ -69,23 +74,42 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
                             }).ToList();
                     }
 
-                    var pokemonEntity = new PokemonEntity()
+                    var spriteEntity = new SpriteEntity();
+                    if (pokemon.Sprites is not null)
                     {
-                        ExternalId = pokemon.Id,
-                        Url = $"https://pokeapi.co/api/v2/pokemon/{pokemon.Id}",
-                        Name = pokemon.Name!,
-                        // Sprites = spriteEntity,
-                        // PokemonDetail = pokemonDetailEntity
-                        Types = typeEntity,
-                        // Abilities = _mapper.Map<List<AbilityEntity>>(pokemon.Abilities),w
-                        // Moves = _mapper.Map<List<MoveEntity>>(pokemon.Moves),
-                        // Height = pokemon.Height,
-                        // Weight = pokemon.Weight,
-                        // EvolvesFrom = pokemon.EvolvesFrom
-                    };
+                        spriteEntity = new SpriteEntity
+                        {
+                            PokemonId = pokemonEntity.Id,
+                            BackDefault = pokemon.Sprites.BackDefault,
+                            BackFemale = pokemon.Sprites.BackFemale,
+                            BackShiny = pokemon.Sprites.BackShiny,
+                            BackShinyFemale = pokemon.Sprites.BackShinyFemale,
+                            FrontDefault = pokemon.Sprites.FrontDefault,
+                            FrontFemale = pokemon.Sprites.FrontFemale,
+                            FrontShiny = pokemon.Sprites.FrontShiny,
+                            FrontShinyFemale = pokemon.Sprites.FrontShinyFemale,
+                            DreamWorldFrontDefault = pokemon.Sprites.Others?.DreamWorld?.FrontDefault,
+                            DreamWorldFrontFemale = pokemon.Sprites.Others?.DreamWorld?.FrontFemale,
+                            HomeFrontDefault = pokemon.Sprites.Others?.Home?.FrontDefault,
+                            HomeFrontFemale = pokemon.Sprites.Others?.Home?.FrontFemale,
+                            HomeFrontShiny = pokemon.Sprites.Others?.Home?.FrontShiny,
+                            HomeFrontShinyFemale = pokemon.Sprites.Others?.Home?.FrontShinyFemale,
+                            OfficialArtworkFrontDefault = pokemon.Sprites.Others?.OfficialArtwork?.FrontDefault,
+                            OfficialArtworkFrontShiny = pokemon.Sprites.Others?.OfficialArtwork?.FrontShiny
+                        };
+                    }
+
+                    pokemonEntity.Types ??= new List<TypeEntity>();
+                    pokemonEntity.Abilities ??= new List<AbilityEntity>();
+                    pokemonEntity.Moves ??= new List<MoveEntity>();
+                    pokemonEntity.Sprites ??= new SpriteEntity();
 
                     var storedPokemon = await _context.Pokemons.Where(x => x.ExternalId == pokemonEntity.ExternalId)
-                                                               .Include(x => x.Types).FirstOrDefaultAsync(cancellationToken);
+                                                               .Include(x => x.Types)
+                                                               .Include(x => x.Abilities)
+                                                               .Include(x => x.Moves)
+                                                               .Include(x => x.Sprites)
+                                                               .FirstOrDefaultAsync(cancellationToken);
 
                     if (storedPokemon is null)
                     {
@@ -102,6 +126,14 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
 
                         storedPokemon.Types.Clear();
                         storedPokemon.Types.AddRange(typeEntity);
+
+                        // storedPokemon.Abilities.Clear();
+                        // storedPokemon.Abilities.AddRange(pokemon.Abilities);
+
+                        // storedPokemon.Moves.Clear();
+                        // storedPokemon.Moves.AddRange(pokemon.Moves);
+
+                        storedPokemon.Sprites = spriteEntity;
 
                         _context.Pokemons.Entry(storedPokemon).State = EntityState.Modified;
                         await _context.SaveChangesAsync(cancellationToken);

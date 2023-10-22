@@ -5,42 +5,21 @@ public class SpriteEntity
     public Guid Id { get; set; }
     public Guid PokemonId { get; set; }
     public virtual PokemonEntity? Pokemon { get; set; }
-    public int ExternalId { get; private set; }
-    public string BackDefault { get; private set; }
-    public string BackFemale { get; private set; }
-    public string FrontDefault { get; private set; }
-    public string FrontFemale { get; private set; }
-    public string BackShiny { get; private set; }
-    public string BackShinyFemale { get; private set; }
-    public string FrontShiny { get; private set; }
-    public string FrontShinyFemale { get; private set; }
-    public string DreamWorldFrontDefault { get; private set; }
-    public string DreamWorldFrontFemale { get; private set; }
-    public string HomeFrontDefault { get; private set; }
-    public string HomeFrontFemale { get; private set; }
-    public string HomeFrontShiny { get; private set; }
-    public string HomeFrontShinyFemale { get; private set; }
-    public string OfficialArtworkFrontDefault { get; private set; }
-    public string OfficialArtworkFrontShiny { get; private set; }
-
-    public SpriteEntity(int externalId, string backDefault, string backFemale, string frontDefault, string frontFemale, string backShiny, string backShinyFemale, string frontShiny, string frontShinyFemale, string dreamWorldFrontDefault, string dreamWorldFrontFemale, string homeFrontDefault, string homeFrontFemale, string homeFrontShiny, string homeFrontShinyFemale, string officialArtworkFrontDefault, string officialArtworkFrontShiny)
-    {
-        ExternalId = externalId;
-        BackDefault = backDefault;
-        BackFemale = backFemale;
-        FrontDefault = frontDefault;
-        FrontFemale = frontFemale;
-        BackShiny = backShiny;
-        BackShinyFemale = backShinyFemale;
-        FrontShiny = frontShiny;
-        FrontShinyFemale = frontShinyFemale;
-        DreamWorldFrontDefault = dreamWorldFrontDefault;
-        DreamWorldFrontFemale = dreamWorldFrontFemale;
-        HomeFrontDefault = homeFrontDefault;
-        HomeFrontFemale = homeFrontFemale;
-        HomeFrontShiny = homeFrontShiny;
-        HomeFrontShinyFemale = homeFrontShinyFemale;
-        OfficialArtworkFrontDefault = officialArtworkFrontDefault;
-        OfficialArtworkFrontShiny = officialArtworkFrontShiny;
-    }
+    public int ExternalId { get; set; }
+    public string? BackDefault { get; set; }
+    public string? BackFemale { get; set; }
+    public string? FrontDefault { get; set; }
+    public string? FrontFemale { get; set; }
+    public string? BackShiny { get; set; }
+    public string? BackShinyFemale { get; set; }
+    public string? FrontShiny { get; set; }
+    public string? FrontShinyFemale { get; set; }
+    public string? DreamWorldFrontDefault { get; set; }
+    public string? DreamWorldFrontFemale { get; set; }
+    public string? HomeFrontDefault { get; set; }
+    public string? HomeFrontFemale { get; set; }
+    public string? HomeFrontShiny { get; set; }
+    public string? HomeFrontShinyFemale { get; set; }
+    public string? OfficialArtworkFrontDefault { get; set; }
+    public string? OfficialArtworkFrontShiny { get; set; }
 }
