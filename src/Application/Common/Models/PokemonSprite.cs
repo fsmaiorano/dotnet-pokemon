@@ -1,4 +1,6 @@
 ﻿using System.Text.Json.Serialization;
+using AutoMapper;
+using Domain.Entities;
 
 namespace Application.Common.Models;
 
@@ -66,6 +68,19 @@ public class PokemonSprite
 
         [JsonPropertyName("front_shiny")]
         public string? FrontShiny { get; set; }
+    }
+
+    private class Mapping : Profile
+    {
+        public Mapping()
+        {
+            CreateMap<PokemonSprite, SpriteEntity>().ReverseMap();
+
+            // CreateMap<GenericContent, AbilityEntity>().ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.ExternalId));
+            // CreateMap<GenericContent, PokemonEntity>().ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.ExternalId));
+            // CreateMap<GenericContent, TypeEntity>().ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.ExternalId));
+            // CreateMap<GenericContent, MoveEntity>().ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.ExternalId));
+        }
     }
 }
 

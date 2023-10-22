@@ -1,8 +1,4 @@
-﻿using Domain.Entities;
-using Application.Common.Models;
-using AutoMapper;
-
-namespace Application;
+﻿namespace Application.Common.Models;
 
 public class Pokemon
 {
@@ -12,5 +8,5 @@ public class Pokemon
     public int Weight { get; set; }
     public int? EvolvesFrom { get; set; }
     public PokemonSprite? Sprites { get; set; }
-    public List<string>? Types { get; set; }
+    public List<PokemonType>? Types { get; set; }
 }

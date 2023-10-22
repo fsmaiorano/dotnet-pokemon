@@ -4,6 +4,7 @@ using Application.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases;
@@ -28,25 +29,43 @@ public class FetchPokemonCommandHandler : IRequestHandler<FetchPokemonCommand>
 
     public async Task Handle(FetchPokemonCommand request, CancellationToken cancellationToken)
     {
-         _logger.LogInformation($"fetchPokemon start - {DateTime.Now}");
+        _logger.LogInformation($"fetchPokemon start - {DateTime.Now}");
 
         try
         {
-            var content = await HttpHelper.GetAsync<GenericResponse>("https://pokeapi.co/api/v2/pokemon?limit=99999999", cancellationToken);
+            var content = await HttpHelper.GetAsync<GenericResponse>("https://pokeapi.co/api/v2/pokemon?limit=3", cancellationToken);
 
             if (content is not null)
             {
-                _context.Pokemons.AddRange(_mapper.Map<List<PokemonEntity>>(content.Results));
-                await _context.SaveChangesAsync(cancellationToken);
+                foreach (var pokemon in content.Results)
+                {
+                    var pokemonEntity = _mapper.Map<PokemonEntity>(pokemon);
+
+                    var storedPokemon = await _context.Pokemons.FirstOrDefaultAsync(x => x.ExternalId == pokemonEntity.ExternalId, cancellationToken);
+
+                    if (storedPokemon is null)
+                    {
+                        _context.Pokemons.Attach(pokemonEntity);
+                        await _context.Pokemons.AddAsync(pokemonEntity, cancellationToken);
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                    else
+                    {
+                        pokemonEntity.Id = storedPokemon.Id;
+                        _context.Pokemons.Entry(storedPokemon).CurrentValues.SetValues(pokemonEntity);
+                        _context.Pokemons.Entry(storedPokemon).State = EntityState.Modified;
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                }
             }
         }
         catch (Exception ex)
         {
-             _logger.LogInformation($"fetchPokemon exception - {DateTime.Now} - {ex.Message}");
+            _logger.LogInformation($"fetchPokemon exception - {DateTime.Now} - {ex.Message}");
         }
         finally
         {
-             _logger.LogInformation($"fetchPokemon end - {DateTime.Now}");
+            _logger.LogInformation($"fetchPokemon end - {DateTime.Now}");
         }
     }
 }

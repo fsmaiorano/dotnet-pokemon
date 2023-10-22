@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -40,8 +41,6 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
 
             var storedPokemons = await _context.Pokemons.ToListAsync(cancellationToken);
 
-            // pokemons = await HandlePokemon(storedPokemons, cancellationToken);
-
             var batches = storedPokemons.Select((x, i) => new { Index = i, Value = x })
                                         .GroupBy(x => x.Index / 100)
                                         .Select(x => x.Select(v => v.Value).ToList())
@@ -53,15 +52,72 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
 
             pokemons = results.SelectMany(x => x).ToList();
 
-             _logger.LogInformation($"handlePokemon success - {DateTime.Now}");
+            if (pokemons.Any())
+            {
+                foreach (var pokemon in pokemons)
+                {
+                    var typeEntity = new List<TypeEntity>();
+                    var types = pokemon.Types?.Select(x => x.Type).ToList();
+                    if (types is not null)
+                    {
+                        typeEntity = types
+                            .Select(type => new TypeEntity
+                            {
+                                ExternalId = int.Parse(type!.Url!.Split('/').Reverse().Skip(1).First() ?? "0"),
+                                Name = type.Name!,
+                                Url = type.Url!
+                            }).ToList();
+                    }
+
+                    var pokemonEntity = new PokemonEntity()
+                    {
+                        ExternalId = pokemon.Id,
+                        Url = $"https://pokeapi.co/api/v2/pokemon/{pokemon.Id}",
+                        Name = pokemon.Name!,
+                        // Sprites = spriteEntity,
+                        // PokemonDetail = pokemonDetailEntity
+                        Types = typeEntity,
+                        // Abilities = _mapper.Map<List<AbilityEntity>>(pokemon.Abilities),w
+                        // Moves = _mapper.Map<List<MoveEntity>>(pokemon.Moves),
+                        // Height = pokemon.Height,
+                        // Weight = pokemon.Weight,
+                        // EvolvesFrom = pokemon.EvolvesFrom
+                    };
+
+                    var storedPokemon = await _context.Pokemons.Where(x => x.ExternalId == pokemonEntity.ExternalId)
+                                                               .Include(x => x.Types).FirstOrDefaultAsync(cancellationToken);
+
+                    if (storedPokemon is null)
+                    {
+                        _context.Pokemons.Attach(pokemonEntity);
+                        await _context.Pokemons.AddAsync(pokemonEntity, cancellationToken);
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                    else
+                    {
+                        storedPokemon.Types ??= new List<TypeEntity>();
+
+                        pokemonEntity.Id = storedPokemon.Id;
+                        _context.Pokemons.Entry(storedPokemon).CurrentValues.SetValues(pokemonEntity);
+
+                        storedPokemon.Types.Clear();
+                        storedPokemon.Types.AddRange(typeEntity);
+
+                        _context.Pokemons.Entry(storedPokemon).State = EntityState.Modified;
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                }
+            }
+
+            _logger.LogInformation($"handlePokemon success - {DateTime.Now}");
         }
         catch (Exception ex)
         {
-             _logger.LogInformation($"handlePokemon exception - {DateTime.Now} - {ex.Message}");
+            _logger.LogInformation($"handlePokemon exception - {DateTime.Now} - {ex.Message}");
         }
         finally
         {
-             _logger.LogInformation($"handlePokemon end - {DateTime.Now}");
+            _logger.LogInformation($"handlePokemon end - {DateTime.Now}");
         }
 
         return pokemons;
@@ -95,7 +151,7 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
                 Weight = pokemonDetail.Weight,
                 EvolvesFrom = pokemonDetail.EvolvesFrom,
                 Sprites = pokemonDetail.Sprites,
-                Types = pokemonDetail.Types?.Select(x => x.Type?.Name!).ToList() ?? new List<string>()
+                Types = pokemonDetail.Types,
             };
 
             pokemons.Add(pokemonDto);

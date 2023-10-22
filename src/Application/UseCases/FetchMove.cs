@@ -4,6 +4,7 @@ using Application.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases;
@@ -28,7 +29,7 @@ public class FetchMoveCommandHandler : IRequestHandler<FetchMoveCommand>
 
     public async Task Handle(FetchMoveCommand request, CancellationToken cancellationToken)
     {
-         _logger.LogInformation($"fetchMove start - {DateTime.Now}");
+        _logger.LogInformation($"fetchMove start - {DateTime.Now}");
 
         try
         {
@@ -36,17 +37,35 @@ public class FetchMoveCommandHandler : IRequestHandler<FetchMoveCommand>
 
             if (content is not null)
             {
-                _context.Moves.AddRange(_mapper.Map<List<MoveEntity>>(content.Results));
-                await _context.SaveChangesAsync(cancellationToken);
+                foreach (var move in content.Results)
+                {
+                    var moveEntity = _mapper.Map<MoveEntity>(move);
+
+                    var storedMove = await _context.Moves.FirstOrDefaultAsync(x => x.ExternalId == moveEntity.ExternalId, cancellationToken);
+
+                    if (storedMove is null)
+                    {
+                        _context.Moves.Attach(moveEntity);
+                        await _context.Moves.AddAsync(moveEntity, cancellationToken);
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                    else
+                    {
+                        moveEntity.Id = storedMove.Id;
+                        _context.Moves.Entry(storedMove).CurrentValues.SetValues(moveEntity);
+                        _context.Moves.Entry(storedMove).State = EntityState.Modified;
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                }
             }
         }
         catch (Exception ex)
         {
-             _logger.LogInformation($"fetchMove exception - {DateTime.Now} - {ex.Message}");
+            _logger.LogInformation($"fetchMove exception - {DateTime.Now} - {ex.Message}");
         }
         finally
         {
-             _logger.LogInformation($"fetchMove end - {DateTime.Now}");
+            _logger.LogInformation($"fetchMove end - {DateTime.Now}");
         }
     }
 }

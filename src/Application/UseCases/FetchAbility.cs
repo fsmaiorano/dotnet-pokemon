@@ -4,6 +4,7 @@ using Application.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases;
@@ -36,8 +37,26 @@ public class FetchAbilityCommandHandler : IRequestHandler<FetchAbilityCommand>
 
             if (content is not null)
             {
-                _context.Abilities.AddRange(_mapper.Map<List<AbilityEntity>>(content.Results));
-                await _context.SaveChangesAsync(cancellationToken);
+                foreach (var ability in content.Results)
+                {
+                    var abilityEntity = _mapper.Map<AbilityEntity>(ability);
+
+                    var storedAbility = await _context.Abilities.FirstOrDefaultAsync(x => x.ExternalId == abilityEntity.ExternalId, cancellationToken);
+
+                    if (storedAbility is null)
+                    {
+                        _context.Abilities.Attach(abilityEntity);
+                        await _context.Abilities.AddAsync(abilityEntity, cancellationToken);
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                    else
+                    {
+                        abilityEntity.Id = storedAbility.Id;
+                        _context.Abilities.Entry(storedAbility).CurrentValues.SetValues(abilityEntity);
+                        _context.Abilities.Entry(storedAbility).State = EntityState.Modified;
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                }
             }
         }
         catch (Exception ex)

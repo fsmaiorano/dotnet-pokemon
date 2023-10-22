@@ -1,4 +1,6 @@
 ﻿using System.Text.Json.Serialization;
+using AutoMapper;
+using Domain.Entities;
 
 namespace Application.Common.Models
 {

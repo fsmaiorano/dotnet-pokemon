@@ -4,6 +4,7 @@ using Application.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases;
@@ -36,8 +37,27 @@ public class FetchTypeCommandHandler : IRequestHandler<FetchTypeCommand>
 
             if (content is not null)
             {
-                _context.Types.AddRange(_mapper.Map<List<TypeEntity>>(content.Results));
-                await _context.SaveChangesAsync(cancellationToken);
+                foreach (var type in content.Results)
+                {
+                    var typeEntity = _mapper.Map<TypeEntity>(type);
+
+                    var storedType = await _context.Types.FirstOrDefaultAsync(x => x.ExternalId == typeEntity.ExternalId, cancellationToken);
+
+                    if (storedType is null)
+                    {
+                        _context.Types.Attach(typeEntity);
+                        await _context.Types.AddAsync(typeEntity, cancellationToken);
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                    else
+                    {
+                        typeEntity.Id = storedType.Id;
+                        _context.Types.Entry(storedType).CurrentValues.SetValues(typeEntity);
+                        _context.Types.Entry(storedType).State = EntityState.Modified;
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                    
+                }
             }
         }
         catch (Exception ex)
