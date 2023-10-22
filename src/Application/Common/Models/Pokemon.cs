@@ -1,4 +1,7 @@
-﻿namespace Application.Common.Models;
+﻿using AutoMapper;
+using Domain.Entities;
+
+namespace Application.Common.Models;
 
 public class Pokemon
 {
@@ -9,4 +12,13 @@ public class Pokemon
     public int? EvolvesFrom { get; set; }
     public PokemonSprite? Sprites { get; set; }
     public List<PokemonType>? Types { get; set; }
+
+    private class Mapping : Profile
+    {
+        public Mapping()
+        {
+            CreateMap<Pokemon, PokemonEntity>().ReverseMap();
+        }
+    }
+
 }

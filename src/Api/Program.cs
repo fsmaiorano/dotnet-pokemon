@@ -1,7 +1,9 @@
 using Application;
 using Application.UseCases;
+using Application.UseCases.Queries;
 using Infrastructure;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +46,20 @@ app.MapGet("/seed", async () =>
     return Results.Ok();
 
 }).WithName("Root").WithOpenApi();
+
+// app.MapGet("/pokemon/{pageNumber}/{pageSize}", async (int? pageNumber, int? pageSize) =>
+app.MapGet("/pokemon", async (int? pageNumber, int? pageSize) =>
+{
+    var query = new GetPokemonWithPaginationQuery
+    {
+        PageNumber = pageNumber ?? 1,
+        PageSize = pageSize ?? 10
+    };
+
+    var response = await mediator.Send(query);
+    return Results.Ok(response);
+
+}).WithName("GetPokemonWithPagination").WithOpenApi();
 
 app.Run();
 

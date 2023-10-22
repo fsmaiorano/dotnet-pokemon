@@ -1,6 +1,11 @@
 @baseUrl = http://localhost:5268
 
 ###
-# @name Get pokemons
+# @name Run seed
 GET {{baseUrl}}/seed
+Content-Type: application/json
+
+###
+# @name Get pokemons with pagination
+GET {{baseUrl}}/pokemon?pageNumber=1&pageSize=10
 Content-Type: application/json
