@@ -61,49 +61,6 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
                     if (pokemonEntity is null)
                         break;
 
-                    var typeEntity = new List<TypeEntity>();
-                    var types = pokemon.Types?.Select(x => x.Type).ToList();
-                    if (types is not null)
-                    {
-                        typeEntity = types
-                            .Select(type => new TypeEntity
-                            {
-                                ExternalId = int.Parse(type!.Url!.Split('/').Reverse().Skip(1).First() ?? "0"),
-                                Name = type.Name!,
-                                Url = type.Url!
-                            }).ToList();
-                    }
-
-                    var spriteEntity = new SpriteEntity();
-                    if (pokemon.Sprites is not null)
-                    {
-                        spriteEntity = new SpriteEntity
-                        {
-                            PokemonId = pokemonEntity.Id,
-                            BackDefault = pokemon.Sprites.BackDefault,
-                            BackFemale = pokemon.Sprites.BackFemale,
-                            BackShiny = pokemon.Sprites.BackShiny,
-                            BackShinyFemale = pokemon.Sprites.BackShinyFemale,
-                            FrontDefault = pokemon.Sprites.FrontDefault,
-                            FrontFemale = pokemon.Sprites.FrontFemale,
-                            FrontShiny = pokemon.Sprites.FrontShiny,
-                            FrontShinyFemale = pokemon.Sprites.FrontShinyFemale,
-                            DreamWorldFrontDefault = pokemon.Sprites.Others?.DreamWorld?.FrontDefault,
-                            DreamWorldFrontFemale = pokemon.Sprites.Others?.DreamWorld?.FrontFemale,
-                            HomeFrontDefault = pokemon.Sprites.Others?.Home?.FrontDefault,
-                            HomeFrontFemale = pokemon.Sprites.Others?.Home?.FrontFemale,
-                            HomeFrontShiny = pokemon.Sprites.Others?.Home?.FrontShiny,
-                            HomeFrontShinyFemale = pokemon.Sprites.Others?.Home?.FrontShinyFemale,
-                            OfficialArtworkFrontDefault = pokemon.Sprites.Others?.OfficialArtwork?.FrontDefault,
-                            OfficialArtworkFrontShiny = pokemon.Sprites.Others?.OfficialArtwork?.FrontShiny
-                        };
-                    }
-
-                    pokemonEntity.Types ??= new List<TypeEntity>();
-                    pokemonEntity.Abilities ??= new List<AbilityEntity>();
-                    pokemonEntity.Moves ??= new List<MoveEntity>();
-                    pokemonEntity.Sprites ??= new SpriteEntity();
-
                     var storedPokemon = await _context.Pokemons.Where(x => x.ExternalId == pokemonEntity.ExternalId)
                                                                .Include(x => x.Types)
                                                                .Include(x => x.Abilities)
@@ -112,32 +69,87 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
                                                                .FirstOrDefaultAsync(cancellationToken);
 
                     if (storedPokemon is null)
+                        break;
+
+                    storedPokemon.Types ??= new List<TypeEntity>();
+
+                    pokemonEntity.Id = storedPokemon.Id;
+
+                    storedPokemon.PokemonDetail = new PokemonDetailEntity
                     {
-                        _context.Pokemons.Attach(pokemonEntity);
-                        await _context.Pokemons.AddAsync(pokemonEntity, cancellationToken);
-                        await _context.SaveChangesAsync(cancellationToken);
-                    }
+                        ExternalId = pokemon.Id,
+                        PokemonId = storedPokemon.Id,
+                        Height = pokemon.Height,
+                        Weight = pokemon.Weight,
+                        EvolvesFromPokemonExternalId = int.Parse(pokemon.EvolvesFrom?.ToString() ?? "0")
+                    };
+
+                    var storedPokemonDetail = await _context.Details.FirstOrDefaultAsync(x => x.PokemonId == storedPokemon.Id, cancellationToken);
+
+                    if (storedPokemonDetail is null)
+                        await _context.Details.AddAsync(storedPokemon.PokemonDetail, cancellationToken);
                     else
                     {
-                        storedPokemon.Types ??= new List<TypeEntity>();
+                        _context.Details.Entry(storedPokemonDetail).CurrentValues.SetValues(storedPokemon.PokemonDetail);
+                        _context.Details.Entry(storedPokemonDetail).Property(x => x.Id).IsModified = false;
+                        _context.Details.Entry(storedPokemonDetail).State = EntityState.Modified;
 
-                        pokemonEntity.Id = storedPokemon.Id;
-                        _context.Pokemons.Entry(storedPokemon).CurrentValues.SetValues(pokemonEntity);
-
-                        storedPokemon.Types.Clear();
-                        storedPokemon.Types.AddRange(typeEntity);
-
-                        // storedPokemon.Abilities.Clear();
-                        // storedPokemon.Abilities.AddRange(pokemon.Abilities);
-
-                        // storedPokemon.Moves.Clear();
-                        // storedPokemon.Moves.AddRange(pokemon.Moves);
-
-                        storedPokemon.Sprites = spriteEntity;
-
-                        _context.Pokemons.Entry(storedPokemon).State = EntityState.Modified;
-                        await _context.SaveChangesAsync(cancellationToken);
+                        // _context.Details.Update(storedPokemon.PokemonDetail);
                     }
+
+                    storedPokemon.Sprites = new SpriteEntity
+                    {
+                        ExternalId = pokemon.Id,
+                        PokemonId = pokemonEntity.Id,
+                        BackDefault = pokemon.Sprites?.BackDefault,
+                        BackFemale = pokemon.Sprites?.BackFemale,
+                        BackShiny = pokemon.Sprites?.BackShiny,
+                        BackShinyFemale = pokemon.Sprites?.BackShinyFemale,
+                        FrontDefault = pokemon.Sprites?.FrontDefault,
+                        FrontFemale = pokemon.Sprites?.FrontFemale,
+                        FrontShiny = pokemon.Sprites?.FrontShiny,
+                        FrontShinyFemale = pokemon.Sprites?.FrontShinyFemale,
+                        DreamWorldFrontDefault = pokemon.Sprites?.Others?.DreamWorld?.FrontDefault,
+                        DreamWorldFrontFemale = pokemon.Sprites?.Others?.DreamWorld?.FrontFemale,
+                        HomeFrontDefault = pokemon.Sprites?.Others?.Home?.FrontDefault,
+                        HomeFrontFemale = pokemon.Sprites?.Others?.Home?.FrontFemale,
+                        HomeFrontShiny = pokemon.Sprites?.Others?.Home?.FrontShiny,
+                        HomeFrontShinyFemale = pokemon.Sprites?.Others?.Home?.FrontShinyFemale,
+                        OfficialArtworkFrontDefault = pokemon.Sprites?.Others?.OfficialArtwork?.FrontDefault,
+                        OfficialArtworkFrontShiny = pokemon.Sprites?.Others?.OfficialArtwork?.FrontShiny
+                    };
+
+                    var storedSprites = await _context.Sprites.FirstOrDefaultAsync(x => x.PokemonId == storedPokemon.Id, cancellationToken);
+                    if (storedSprites is null)
+                        await _context.Sprites.AddAsync(storedPokemon.Sprites, cancellationToken);
+                    else
+                    {
+                        _context.Sprites.Entry(storedSprites).CurrentValues.SetValues(storedPokemon.Sprites);
+                        _context.Sprites.Entry(storedSprites).Property(x => x.Id).IsModified = false;
+                        _context.Sprites.Entry(storedSprites).State = EntityState.Modified;
+
+                        // _context.Sprites.Update(storedPokemon.Sprites);
+                    }
+
+                    var types = pokemon.Types?.Select(x => x.Type).ToList();
+                    if (types is not null && types.Any())
+                    {
+                        foreach (var type in types)
+                        {
+                            var externalId = int.Parse(type!.Url!.Split('/').Reverse().Skip(1).First() ?? "0");
+                            var storedType = await _context.Types.FirstOrDefaultAsync(x => x.ExternalId == externalId, cancellationToken);
+
+                            if (storedType is null)
+                                break;
+
+                            storedPokemon.Types.Add(storedType);
+                        }
+                    }
+
+                    _context.Pokemons.Entry(storedPokemon).CurrentValues.SetValues(pokemonEntity);
+                    _context.Pokemons.Entry(storedPokemon).Property(x => x.Id).IsModified = false;
+                    _context.Pokemons.Entry(storedPokemon).State = EntityState.Modified;
+                    await _context.SaveChangesAsync(cancellationToken);
                 }
             }
 

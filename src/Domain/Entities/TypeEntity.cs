@@ -1,8 +1,9 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Common;
 
-public class TypeEntity
+namespace Domain.Entities;
+
+public class TypeEntity : BaseEntity
 {
-    public Guid Id { get; set; }
     public int ExternalId { get; set; }
     public required string Name { get; set; }
     public required string Url { get; set; }

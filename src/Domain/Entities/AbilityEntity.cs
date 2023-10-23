@@ -1,8 +1,9 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Common;
 
-public class AbilityEntity
+namespace Domain.Entities;
+
+public class AbilityEntity : BaseEntity
 {
-    public Guid? Id { get; set; }
     public int ExternalId { get; set; }
     public required string Name { get; set; }
     public required string Url { get; set; }

@@ -1,8 +1,9 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Common;
 
-public class SpriteEntity
+namespace Domain.Entities;
+
+public class SpriteEntity : BaseEntity
 {
-    public Guid Id { get; set; }
     public Guid PokemonId { get; set; }
     public virtual PokemonEntity? Pokemon { get; set; }
     public int ExternalId { get; set; }

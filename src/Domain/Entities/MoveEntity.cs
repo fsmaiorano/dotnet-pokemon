@@ -2,9 +2,8 @@
 
 namespace Domain.Entities;
 
-public class MoveEntity
+public class MoveEntity : BaseEntity
 {
-    public Guid Id { get; set; }
     public int ExternalId { get; private set; }
     public string Name { get; private set; }
     public string Url { get; private set; }

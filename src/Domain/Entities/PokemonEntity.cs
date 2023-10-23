@@ -1,8 +1,9 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Common;
 
-public class PokemonEntity
+namespace Domain.Entities;
+
+public class PokemonEntity : BaseEntity
 {
-    public Guid Id { get; set; }
     public required int ExternalId { get; set; }
     public required string Name { get; set; }
     public required string Url { get; set; }

@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231019130417_Init")]
+    [Migration("20231023161204_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -28,7 +28,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.AbilityEntity", b =>
                 {
-                    b.Property<Guid?>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id")
@@ -86,13 +86,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.PokemonDetailEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("uuid")
                         .HasColumnName("id")
                         .HasAnnotation("DatabaseGenerated", DatabaseGeneratedOption.Identity);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("EvolvesFromPokemonExternalId")
                         .HasColumnType("integer")
