@@ -1,10 +1,13 @@
-﻿using Domain.Common;
+﻿using System.Text.Json.Serialization;
+using Domain.Common;
 
 namespace Domain.Entities;
 
 public class SpriteEntity : BaseEntity
 {
+    [JsonIgnore]
     public Guid PokemonId { get; set; }
+    [JsonIgnore]
     public virtual PokemonEntity? Pokemon { get; set; }
     public int ExternalId { get; set; }
     public string? BackDefault { get; set; }

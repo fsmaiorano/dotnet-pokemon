@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Application;
 using Application.UseCases;
 using Application.UseCases.Queries;
@@ -21,6 +22,8 @@ builder.Services.AddLogging(loggingBuilder =>
     loggingBuilder.AddConsole();
     loggingBuilder.AddDebug();
 });
+
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 var app = builder.Build();
 

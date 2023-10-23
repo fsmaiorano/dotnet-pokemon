@@ -74,10 +74,9 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
                     storedPokemon.Types ??= new List<TypeEntity>();
 
                     pokemonEntity.Id = storedPokemon.Id;
-
                     storedPokemon.PokemonDetail = new PokemonDetailEntity
                     {
-                        ExternalId = pokemon.Id,
+                        ExternalId = storedPokemon.ExternalId,
                         PokemonId = storedPokemon.Id,
                         Height = pokemon.Height,
                         Weight = pokemon.Weight,

@@ -1,4 +1,5 @@
-﻿using Domain.Common;
+﻿using System.Text.Json.Serialization;
+using Domain.Common;
 
 namespace Domain.Entities;
 
@@ -8,6 +9,7 @@ public class MoveEntity : BaseEntity
     public string Name { get; private set; }
     public string Url { get; private set; }
 
+    [JsonIgnore]
     public virtual IList<PokemonEntity>? Pokemons { get; set; }
 
     public MoveEntity(int externalId, string name, string url)

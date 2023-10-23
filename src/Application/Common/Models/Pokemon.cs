@@ -18,7 +18,7 @@ public class Pokemon
         public Mapping()
         {
             CreateMap<Pokemon, PokemonEntity>().ReverseMap();
+            CreateMap<PaginatedList<Pokemon>, PaginatedList<PokemonEntity>>().ReverseMap();
         }
     }
-
 }
