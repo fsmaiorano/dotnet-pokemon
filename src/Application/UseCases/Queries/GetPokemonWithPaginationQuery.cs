@@ -27,14 +27,12 @@ public class GetPokemonWithPaginationHandler : IRequestHandler<GetPokemonWithPag
 
     public async Task<PaginatedList<PokemonEntity>> Handle(GetPokemonWithPaginationQuery request, CancellationToken cancellationToken)
     {
-        var result = await _context.Pokemons
-            .Include(p => p.Sprites)
-            .Include(p => p.Types)
-            .Include(p => p.PokemonDetail)
-            .AsNoTracking()
-            .OrderBy(p => p.Name)
-            .PaginatedListAsync(request.PageNumber, request.PageSize);
-        
-        return result;
+        return await _context.Pokemons
+             .Include(p => p.Sprites)
+             .Include(p => p.Types)
+             .Include(p => p.PokemonDetail)
+             .AsNoTracking()
+             .OrderBy(p => p.Name)
+             .PaginatedListAsync(request.PageNumber, request.PageSize);
     }
 }

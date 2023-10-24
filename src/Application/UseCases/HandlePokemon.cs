@@ -84,17 +84,10 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
                     };
 
                     var storedPokemonDetail = await _context.Details.FirstOrDefaultAsync(x => x.PokemonId == storedPokemon.Id, cancellationToken);
-
                     if (storedPokemonDetail is null)
                         await _context.Details.AddAsync(storedPokemon.PokemonDetail, cancellationToken);
                     else
-                    {
-                        _context.Details.Entry(storedPokemonDetail).CurrentValues.SetValues(storedPokemon.PokemonDetail);
-                        _context.Details.Entry(storedPokemonDetail).Property(x => x.Id).IsModified = false;
-                        _context.Details.Entry(storedPokemonDetail).State = EntityState.Modified;
-
-                        // _context.Details.Update(storedPokemon.PokemonDetail);
-                    }
+                        storedPokemonDetail = storedPokemon.PokemonDetail;
 
                     storedPokemon.Sprites = new SpriteEntity
                     {
@@ -122,13 +115,7 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
                     if (storedSprites is null)
                         await _context.Sprites.AddAsync(storedPokemon.Sprites, cancellationToken);
                     else
-                    {
-                        _context.Sprites.Entry(storedSprites).CurrentValues.SetValues(storedPokemon.Sprites);
-                        _context.Sprites.Entry(storedSprites).Property(x => x.Id).IsModified = false;
-                        _context.Sprites.Entry(storedSprites).State = EntityState.Modified;
-
-                        // _context.Sprites.Update(storedPokemon.Sprites);
-                    }
+                        storedSprites = storedPokemon.Sprites;
 
                     var types = pokemon.Types?.Select(x => x.Type).ToList();
                     if (types is not null && types.Any())
@@ -145,9 +132,6 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
                         }
                     }
 
-                    _context.Pokemons.Entry(storedPokemon).CurrentValues.SetValues(pokemonEntity);
-                    _context.Pokemons.Entry(storedPokemon).Property(x => x.Id).IsModified = false;
-                    _context.Pokemons.Entry(storedPokemon).State = EntityState.Modified;
                     await _context.SaveChangesAsync(cancellationToken);
                 }
             }
