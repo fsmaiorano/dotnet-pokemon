@@ -17,12 +17,10 @@ public record GetPokemonWithPaginationQuery : IRequest<PaginatedList<PokemonEnti
 public class GetPokemonWithPaginationHandler : IRequestHandler<GetPokemonWithPaginationQuery, PaginatedList<PokemonEntity>>
 {
     private readonly IDataContext _context;
-    private readonly IMapper _mapper;
 
-    public GetPokemonWithPaginationHandler(IDataContext context, IMapper mapper)
+    public GetPokemonWithPaginationHandler(IDataContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
     public async Task<PaginatedList<PokemonEntity>> Handle(GetPokemonWithPaginationQuery request, CancellationToken cancellationToken)
@@ -32,7 +30,7 @@ public class GetPokemonWithPaginationHandler : IRequestHandler<GetPokemonWithPag
              .Include(p => p.Types)
              .Include(p => p.PokemonDetail)
              .AsNoTracking()
-             .OrderBy(p => p.Name)
+             .OrderBy(p => p.ExternalId)
              .PaginatedListAsync(request.PageNumber, request.PageSize);
     }
 }

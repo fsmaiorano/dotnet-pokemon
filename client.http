@@ -6,6 +6,11 @@ GET {{baseUrl}}/seed
 Content-Type: application/json
 
 ###
+# @name Get pokemons 
+GET {{baseUrl}}/pokemon
+Content-Type: application/json
+
+###
 # @name Get pokemons with pagination
-GET {{baseUrl}}/pokemon?pageNumber=1&pageSize=10
+GET {{baseUrl}}/pokemonWithPagination?pageNumber=1&pageSize=10
 Content-Type: application/json
