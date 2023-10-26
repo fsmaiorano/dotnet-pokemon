@@ -120,8 +120,11 @@ public class Pokemon : IFirestoreConverter<Pokemon>
     {
         public Mapping()
         {
-            CreateMap<Pokemon, PokemonEntity>().ReverseMap();
             CreateMap<PaginatedList<Pokemon>, PaginatedList<PokemonEntity>>().ReverseMap();
+            CreateMap<Pokemon, PokemonEntity>().ReverseMap()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ExternalId))
+                    .ForMember(dest => dest.Sprites, opt => opt.MapFrom(src => src.Sprites))
+                    .ForMember(dest => dest.Types, opt => opt.MapFrom(src => src.Types));
         }
     }
 }

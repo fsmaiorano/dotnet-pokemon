@@ -1,0 +1,134 @@
+[
+  {
+    "externalId": 1,
+    "name": "bulbasaur",
+    "url": "https://pokeapi.co/api/v2/pokemon/1/",
+    "pokemonDetail": {
+      "externalId": 1,
+      "height": 7,
+      "weight": 69,
+      "evolvesFromPokemonExternalId": 0
+    },
+    "sprites": {
+      "externalId": 1,
+      "backDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",
+      "backFemale": null,
+      "frontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+      "frontFemale": null,
+      "backShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png",
+      "backShinyFemale": null,
+      "frontShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png",
+      "frontShinyFemale": null,
+      "dreamWorldFrontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg",
+      "dreamWorldFrontFemale": null,
+      "homeFrontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
+      "homeFrontFemale": null,
+      "homeFrontShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/1.png",
+      "homeFrontShinyFemale": null,
+      "officialArtworkFrontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+      "officialArtworkFrontShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/1.png"
+    },
+    "types": [
+      {
+        "externalId": 4,
+        "name": "poison",
+        "url": "https://pokeapi.co/api/v2/type/4/"
+      },
+      {
+        "externalId": 12,
+        "name": "grass",
+        "url": "https://pokeapi.co/api/v2/type/12/"
+      }
+    ],
+    "abilities": null,
+    "moves": null
+  },
+  {
+    "externalId": 2,
+    "name": "ivysaur",
+    "url": "https://pokeapi.co/api/v2/pokemon/2/",
+    "pokemonDetail": {
+      "externalId": 2,
+      "height": 10,
+      "weight": 130,
+      "evolvesFromPokemonExternalId": 1
+    },
+    "sprites": {
+      "externalId": 2,
+      "backDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/2.png",
+      "backFemale": null,
+      "frontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
+      "frontFemale": null,
+      "backShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/2.png",
+      "backShinyFemale": null,
+      "frontShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/2.png",
+      "frontShinyFemale": null,
+      "dreamWorldFrontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/2.svg",
+      "dreamWorldFrontFemale": null,
+      "homeFrontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/2.png",
+      "homeFrontFemale": null,
+      "homeFrontShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/2.png",
+      "homeFrontShinyFemale": null,
+      "officialArtworkFrontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
+      "officialArtworkFrontShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/2.png"
+    },
+    "types": [
+      {
+        "externalId": 4,
+        "name": "poison",
+        "url": "https://pokeapi.co/api/v2/type/4/"
+      },
+      {
+        "externalId": 12,
+        "name": "grass",
+        "url": "https://pokeapi.co/api/v2/type/12/"
+      }
+    ],
+    "abilities": null,
+    "moves": null
+  },
+  {
+    "externalId": 3,
+    "name": "venusaur",
+    "url": "https://pokeapi.co/api/v2/pokemon/3/",
+    "pokemonDetail": {
+      "externalId": 3,
+      "height": 20,
+      "weight": 1000,
+      "evolvesFromPokemonExternalId": 2
+    },
+    "sprites": {
+      "externalId": 3,
+      "backDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/3.png",
+      "backFemale": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/female/3.png",
+      "frontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
+      "frontFemale": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/3.png",
+      "backShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/3.png",
+      "backShinyFemale": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/female/3.png",
+      "frontShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/3.png",
+      "frontShinyFemale": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/3.png",
+      "dreamWorldFrontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/3.svg",
+      "dreamWorldFrontFemale": null,
+      "homeFrontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/3.png",
+      "homeFrontFemale": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/3.png",
+      "homeFrontShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/3.png",
+      "homeFrontShinyFemale": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/3.png",
+      "officialArtworkFrontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png",
+      "officialArtworkFrontShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/3.png"
+    },
+    "types": [
+      {
+        "externalId": 4,
+        "name": "poison",
+        "url": "https://pokeapi.co/api/v2/type/4/"
+      },
+      {
+        "externalId": 12,
+        "name": "grass",
+        "url": "https://pokeapi.co/api/v2/type/12/"
+      }
+    ],
+    "abilities": null,
+    "moves": null
+  }
+]

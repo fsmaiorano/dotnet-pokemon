@@ -1,4 +1,7 @@
 ﻿using Application.Common.Behaviours;
+using Application.Common.Models;
+using AutoMapper;
+using Domain.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +14,18 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        var configuration = new MapperConfiguration(cfg =>
+        {
+            cfg.AllowNullCollections = true;
+            cfg.AllowNullDestinationValues = true;
+            cfg.AddMaps(Assembly.GetExecutingAssembly());
+        });
+
+        var mapper = configuration.CreateMapper();
+
+        services.AddSingleton(mapper);
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg =>
         {

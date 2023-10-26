@@ -1,4 +1,5 @@
-﻿using Domain.Common;
+﻿using AutoMapper;
+using Domain.Common;
 
 namespace Domain.Entities;
 
