@@ -21,7 +21,9 @@ public class HandlePokemonCommandHandler : IRequestHandler<HandlePokemonCommand,
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<HandlePokemonCommandHandler> _logger;
 
-    public HandlePokemonCommandHandler(IDataContext context, IMapper mapper, IServiceProvider serviceProvider, ILogger<HandlePokemonCommandHandler> logger)
+    public HandlePokemonCommandHandler(IDataContext context,
+                                       IMapper mapper, IServiceProvider serviceProvider,
+                                       ILogger<HandlePokemonCommandHandler> logger)
     {
         _context = context;
         _mapper = mapper;

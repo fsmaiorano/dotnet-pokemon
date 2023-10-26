@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Infrastructure.Context;
+using Infrastructure.Firestore;
 using Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -14,6 +15,7 @@ public static class ConfigureServices
     {
         services.AddSingleton(provider => configuration);
         services.AddTransient<IDataContext>(provider => provider.GetRequiredService<DataContext>());
+        services.AddTransient<IFirestoreContext, FirestoreContext>();
         services.AddScoped<ISaveChangesInterceptor, AuditableEntitySaveChangesInterceptor>();
 
         if (!AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))

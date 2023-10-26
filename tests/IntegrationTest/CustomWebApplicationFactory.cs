@@ -1,10 +1,11 @@
-﻿using Infrastructure.Context;
+﻿using Application.Common.Interfaces;
+using Infrastructure.Context;
+using Infrastructure.Firestore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace IntegrationTest;
 
@@ -34,7 +35,7 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
         });
     }
 
-    private static DirectoryInfo GetSolutionPath(string currentPath = null!)
+    internal static DirectoryInfo GetSolutionPath(string currentPath = null!)
     {
         var directory = new DirectoryInfo(
             currentPath ?? Directory.GetCurrentDirectory());

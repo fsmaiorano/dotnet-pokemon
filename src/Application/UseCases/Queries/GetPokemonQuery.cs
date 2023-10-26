@@ -10,11 +10,11 @@ public record GetPokemonQuery : IRequest<List<PokemonEntity>>
 
 }
 
-public class GetPokemonHandler : IRequestHandler<GetPokemonQuery, List<PokemonEntity>>
+public class GetPokemonQueryHandler : IRequestHandler<GetPokemonQuery, List<PokemonEntity>>
 {
     private readonly IDataContext _context;
 
-    public GetPokemonHandler(IDataContext context)
+    public GetPokemonQueryHandler(IDataContext context)
     {
         _context = context;
     }

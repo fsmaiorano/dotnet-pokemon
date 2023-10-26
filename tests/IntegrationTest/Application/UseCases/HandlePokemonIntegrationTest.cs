@@ -1,6 +1,4 @@
-﻿using Application;
-using Application.UseCases;
-using Domain.Entities;
+﻿using Application.UseCases;
 
 namespace IntegrationTest.Application.UseCases;
 
