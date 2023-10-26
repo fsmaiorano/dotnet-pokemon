@@ -33,3 +33,15 @@ The implementation between the Api and the rest of the application is built with
 
 ## Tests
 - Run the command `dotnet test` in the root folder
+
+### To-do
+- [ ] Implement cache to improve performance
+- [x] Implement pagination
+- [ ] Implement unit tests
+- [x] Implement integration tests
+- [x] Implement docker
+- [x] Implement swagger
+- [ ] Implement logging with serilog
+- [x] Implement error handling
+
+
