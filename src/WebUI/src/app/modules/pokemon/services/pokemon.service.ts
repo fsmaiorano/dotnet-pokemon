@@ -6,18 +6,16 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class PokemonService {
   private readonly baseUrl = 'http://localhost:5268';
 
-  constructor(private http: HttpClient, private store: AngularFirestore) {
+  constructor(private http: HttpClient, private store: AngularFirestore) {}
 
-  }
-
-  public async getPokemon() {
-    // return this.http.get(`${this.baseUrl}/pokemon`);
-    console.log('getPokemon');
-    return await this.store
+  public async getPokemon(): Promise<any> {
+    this.store
       .collection('pokemons')
       .valueChanges()
-      .subscribe((response) => {
-        console.log(response);
+      .subscribe((result) => {
+        debugger;
+        console.log(result);
+        return result;
       });
   }
 
