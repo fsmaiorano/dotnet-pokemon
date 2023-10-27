@@ -10,11 +10,14 @@ The implementation between the Api and the rest of the application is built with
 
 
 ## Technologies Used
-- .NET 7
-- ASP.NET MVC
-- Entity Framework Core with InMemory Database
 - C#
-
+- .NET 7
+- Entity Framework Core with InMemory Database
+- MediatR
+- AutoMapper
+- Docker Compose
+- Swagger
+- Firestore
 
 ## How to run
 
