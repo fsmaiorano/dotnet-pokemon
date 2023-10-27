@@ -27,6 +27,7 @@ The implementation between the Api and the rest of the application is built with
 2. Run the command `docker-compose up` in the root folder
 3. Open the browser and go to `http://localhost:port/swagger/index.html` to see the swagger documentation
 4. Use the endpoints to get pokemons from [PokeApi](https://pokeapi.co/) and save in a database
+5. Create a firestore database, download the credentials file and put in the root folder with the name `firebase.json`
 
 ## Endpoints
 - See client.http file in the root folder
