@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "WebUI",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}

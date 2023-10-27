@@ -365,3 +365,5 @@ FodyWeavers.xsd
 .DS_Store
 .vscode
 firestore-key.json
+src/WebUI/src/environments/environment.ts
+src/WebUI/src/environments/environment.development.ts

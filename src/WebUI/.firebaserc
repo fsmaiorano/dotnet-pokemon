@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "pokemon-5d230": {
+      "hosting": {
+        "WebUI": [
+          "pokemon-5d230"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "pokemon-5d230"
+  }
+}
