@@ -6,6 +6,11 @@ GET {{baseUrl}}/seed
 Content-Type: application/json
 
 ###
+# @name Run seed firestore
+GET {{baseUrl}}/seed-firestore
+Content-Type: application/json
+
+###
 # @name Get pokemons 
 GET {{baseUrl}}/pokemon
 Content-Type: application/json

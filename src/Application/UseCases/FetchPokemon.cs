@@ -33,7 +33,7 @@ public class FetchPokemonCommandHandler : IRequestHandler<FetchPokemonCommand>
 
         try
         {
-            var content = await HttpHelper.GetAsync<GenericResponse>("https://pokeapi.co/api/v2/pokemon?limit=3", cancellationToken);
+            var content = await HttpHelper.GetAsync<GenericResponse>("https://pokeapi.co/api/v2/pokemon?limit=99999999999999", cancellationToken);
 
             if (content is not null)
             {

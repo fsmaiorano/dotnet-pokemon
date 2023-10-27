@@ -1,7 +1,5 @@
-using System.Text.Json;
 using Application.Common.Interfaces;
 using Application.Common.Models;
-using Domain.Entities;
 using Google.Cloud.Firestore;
 
 namespace Infrastructure.Firestore;

@@ -41,10 +41,22 @@ app.MapGet("/seed", async () =>
 
     };
 
-    var response = await mediator.Send(command);
+    await mediator.Send(command);
     return Results.Ok();
 
 }).WithName("Root").WithOpenApi();
+
+app.MapGet("/seed-firestore", async () =>
+{
+    var command = new CreateFirestoreCommand
+    {
+
+    };
+
+    await mediator.Send(command);
+    return Results.Ok();
+
+}).WithName("CreateFirestore").WithOpenApi();
 
 app.MapGet("/pokemon", async () =>
 {
