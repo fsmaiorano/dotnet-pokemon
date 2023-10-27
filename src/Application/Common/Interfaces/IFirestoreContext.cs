@@ -2,7 +2,7 @@
 
 namespace Application.Common.Interfaces;
 
-public interface IFirestoreContext
+public interface IFirestoreService
 {
     Task<Pokemon> GetPokemon(string name);
     Task SavePokemon(Pokemon pokemon);

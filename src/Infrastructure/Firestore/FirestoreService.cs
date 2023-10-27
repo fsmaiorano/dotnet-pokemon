@@ -4,13 +4,13 @@ using Google.Cloud.Firestore;
 
 namespace Infrastructure.Firestore;
 
-public class FirestoreContext : IFirestoreContext
+public class FirestoreService : IFirestoreService
 {
     private readonly FirestoreDb _db;
 
-    public FirestoreContext()
+    public FirestoreService()
     {
-        string filename = "pokemon-5d230-firebase-adminsdk-mfdyn-7ed3f9c0e2.json";
+        string filename = "firestore-key.json";
         var path = $"{GetSolutionPath().FullName}/{filename}";
 
         Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", path);

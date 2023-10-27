@@ -80,8 +80,6 @@ public class Testing
         return await context.Set<TEntity>().CountAsync();
     }
 
-
-
     //public async Task<HttpClient> CreateHttpClient()
     //{
     // using var application = new CustomWebApplicationFactory();

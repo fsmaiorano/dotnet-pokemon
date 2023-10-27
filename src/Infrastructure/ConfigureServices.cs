@@ -15,7 +15,7 @@ public static class ConfigureServices
     {
         services.AddSingleton(provider => configuration);
         services.AddTransient<IDataContext>(provider => provider.GetRequiredService<DataContext>());
-        services.AddTransient<IFirestoreContext, FirestoreContext>();
+        services.AddTransient<IFirestoreService, FirestoreService>();
         services.AddScoped<ISaveChangesInterceptor, AuditableEntitySaveChangesInterceptor>();
 
         if (!AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))
