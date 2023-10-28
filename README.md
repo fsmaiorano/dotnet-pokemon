@@ -24,6 +24,7 @@ The implementation between the Api and the rest of the application is built with
 ### Requirements
 - .NET 7
 - Docker
+- dotnet tool install --global dotnet-ef
 
 ### Steps
 1. Clone this repository
@@ -44,7 +45,7 @@ The implementation between the Api and the rest of the application is built with
 - Run the command `dotnet test` in the root folder
 
 ### To-do
-- [ ] Implement cache to improve performance
+- [ ] Implement cache to improve performance - get all pokemons
 - [x] Implement pagination
 - [ ] Implement unit tests
 - [x] Implement integration tests
