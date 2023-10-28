@@ -12,6 +12,7 @@ export class PokemonComponent {
   }
 
   public async getPokemon() {
-    await this.pokemonService.getPokemon();
+    let x = await this.pokemonService.getPokemon();
+    console.log(x);
   }
 }

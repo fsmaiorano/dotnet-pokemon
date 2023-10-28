@@ -13,13 +13,18 @@ export class PokemonService {
       .collection('pokemons')
       .valueChanges()
       .subscribe((result) => {
-        debugger;
-        console.log(result);
+        // console.log(result);
         return result;
       });
   }
 
-  public getPokemonWithPagination(page: number, pageSize: number) {
-    return this.http.get(`${this.baseUrl}/pokemon/${page}/${pageSize}`);
+  public async getPokemonWithPagination(page: number, pageSize: number) {
+    await this.http
+      .get(`${this.baseUrl}/pokemon/${page}/${pageSize}`)
+      .pipe((response) => {
+        debugger;
+        console.log(response);
+        return response;
+      });
   }
 }
