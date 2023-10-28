@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class PokemonService {
@@ -8,14 +9,22 @@ export class PokemonService {
 
   constructor(private http: HttpClient, private store: AngularFirestore) {}
 
-  public async getPokemon(): Promise<any> {
-    this.store
-      .collection('pokemons')
-      .valueChanges()
-      .subscribe((result) => {
-        // console.log(result);
-        return result;
-      });
+  public async getPokemon():Promise<Observable<any>> {
+    // this.store
+    //   .collection('pokemons')
+    //   .valueChanges()
+    //   .subscribe((result) => {
+    //     // console.log(result);
+    //     return result;
+    //   });
+
+    // this.http.get(`${this.baseUrl}/pokemon`).subscribe({
+    //   next: (v) => console.log(v),
+    //   error: (e) => console.error(e),
+    //   complete: () => console.info('complete'),
+    // });
+
+    return this.http.get(`${this.baseUrl}/pokemon`);
   }
 
   public async getPokemonWithPagination(page: number, pageSize: number) {

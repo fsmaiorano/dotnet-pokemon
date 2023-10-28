@@ -11,8 +11,14 @@ export class PokemonComponent {
     this.getPokemon();
   }
 
-  public async getPokemon() {
-    let x = await this.pokemonService.getPokemon();
-    console.log(x);
+  public async getPokemon(): Promise<any> {
+    (await this.pokemonService.getPokemon()).subscribe({
+      next: (response) => {
+        console.log(response);
+        return response;
+      },
+      error: (e) => console.error(e),
+      complete: () => console.info('complete'),
+    });
   }
 }
