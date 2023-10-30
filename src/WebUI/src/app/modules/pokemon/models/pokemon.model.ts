@@ -2,7 +2,7 @@ import { Sprite } from './sprite.model';
 import { Type } from './type.model';
 
 export class Pokemon {
-  id: number;
+  externalId: number;
   name: string;
   height: number;
   weight: number;
@@ -11,14 +11,14 @@ export class Pokemon {
   types: Type[] = [];
 
   constructor(
-    id: number,
+    externalId: number,
     name: string,
     height: number,
     weight: number,
     evolvesFrom: number,
     sprites: Sprite
   ) {
-    this.id = id;
+    this.externalId = externalId;
     this.name = name;
     this.height = height;
     this.weight = weight;

@@ -1,14 +1,5 @@
 export class Type {
-  slot: number = 0;
-  type: TypeObject[] = [];
-}
-
-class TypeObject {
+  externalId: number = 0;
   name: string = '';
   url: string = '';
-
-  constructor(name: string, url: string) {
-    this.name = name;
-    this.url = url;
-  }
 }

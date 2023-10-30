@@ -1,7 +1,13 @@
-<div class="pokemon-grid-item">
-  <p>{{ pokemon.name }}</p>
-
-  <div class="pokemon-grid-item__b">
-
+<div class="pokemon-grid-item" *ngIf="pokemon; else elseBlock" #item>
+  <div class="pokemon-grid-item">
+    <img
+      [src]="pokemon.sprites.officialArtworkFrontDefault"
+      alt="{{ pokemon.name }}"
+    />
+  </div>
+  <div class="pokemon-grid-item__bottom">
+    <p>#{{pokemon.externalId}}</p>
+    <p>{{ pokemon.name }}</p>
   </div>
 </div>
+<ng-template #elseBlock>Loading...</ng-template>

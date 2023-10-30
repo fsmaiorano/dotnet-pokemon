@@ -1,5 +1,30 @@
 .pokemon-grid-item {
-  background-color: red;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 32px;
+  transition: 0.4s ease-in-out transform, 0.4s ease-in-out box-shadow;
+
+  &__bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+
+    p {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    p:first-child {
+    }
+
+    p:last-child {
+    }
+  }
 }
 
 // import { styled } from "styled-components";
