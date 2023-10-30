@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, Output } from '@angular/core';
+import { Pokemon } from '../../models/pokemon.model';
 import { PokemonService } from '../../services/pokemon.service';
 
 @Component({
-  selector: 'app-pokemon',
-  templateUrl: './pokemon.component.html',
-  styleUrls: ['./pokemon.component.scss'],
+  selector: 'app-pokemon-grid',
+  templateUrl: './pokemon-grid.component.html',
+  styleUrls: ['./pokemon-grid.component.scss'],
 })
-export class PokemonComponent {
+export class PokemonGridComponent {
+  @Output() pokemons: Pokemon[] = [];
+
   constructor(private pokemonService: PokemonService) {
     this.getPokemon();
   }
@@ -15,7 +18,7 @@ export class PokemonComponent {
     (await this.pokemonService.getPokemon()).subscribe({
       next: (response) => {
         console.log(response);
-        return response;
+        this.pokemons = response;
       },
       error: (e) => console.error(e),
       complete: () => console.info('complete'),

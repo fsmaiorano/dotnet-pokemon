@@ -1,0 +1,66 @@
+.pokemon-grid-item {
+  background-color: red;
+}
+
+// import { styled } from "styled-components";
+// import { pokemonTypeColor } from "../utils/pokemon-type-color";
+
+// export interface PokemonGridCardProps {
+//   pokemonTypes: string[];
+// }
+
+// export const PokemonGridCard = styled.div<PokemonGridCardProps>`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   /* border-radius: 1rem; */
+//   padding: 1rem;
+//   background-image: ${(props) => {
+//     const colors = pokemonTypeColor(props.pokemonTypes);
+//     return `linear-gradient(90deg, ${colors[0]} 0%, ${colors[1]} 100%)`;
+//   }};
+
+//   /* transition: box-shadow 0.3s;
+//   filter: drop-shadow(2px 2px 4px #000000 5);
+//   &:hover {
+//     box-shadow: 2px 2px 8px 4px rgba(0, 0, 0, 0.1);
+//   } */
+
+//   border-radius: 32px;
+//   transition: 0.4s ease-in-out transform, 0.4s ease-in-out box-shadow;
+//   box-shadow: ${(props) => {
+//     const colors = pokemonTypeColor(props.pokemonTypes);
+//     return `0px 0px 0 0px ${colors[0]}, -1px 0 28px 0 rgba(34, 33, 81, 0.01),
+//     28px 28px 28px 0 rgba(34, 33, 81, 0.25);`;
+//   }};
+
+//   &:hover {
+//     box-shadow: ${(props) => {
+//       const colors = pokemonTypeColor(props.pokemonTypes);
+//       return `1px 1px 0 1px ${colors[1]}, -1px 0 28px 0 rgba(34, 33, 81, 0.01),
+//       54px 54px 28px -10px rgba(34, 33, 81, 0.15);`;
+//     }};
+//   }
+// `;
+
+// export const PokemonGridCardBottom = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-around;
+//   align-items: center;
+//   width: 100%;
+
+//   p {
+//     font-size: 1.5rem;
+//     font-weight: bold;
+//   }
+
+//   p:first-child {
+//     color: ${(props) => props.theme["gray-900"]};
+//   }
+
+//   p:last-child {
+//     color: ${(props) => props.theme["gray-900"]};
+//   }
+// `;

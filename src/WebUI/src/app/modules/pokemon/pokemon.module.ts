@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { PokemonComponent } from './pages/pokemon/pokemon.component';
+import { PokemonGridItemComponent } from './components/pokemon-grid-item/pokemon-grid-item.component';
+import { PokemonGridComponent } from './components/pokemon-grid/pokemon-grid.component';
 import { PokemonService } from './services/pokemon.service';
 
 @NgModule({
-  declarations: [PokemonComponent],
+  declarations: [PokemonGridComponent, PokemonGridItemComponent],
   imports: [CommonModule],
-  exports: [PokemonComponent],
+  exports: [PokemonGridComponent],
   providers: [PokemonService],
 })
 export class PokemonModule {}
