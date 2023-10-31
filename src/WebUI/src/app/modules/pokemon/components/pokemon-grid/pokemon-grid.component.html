@@ -1,8 +1,17 @@
-<div class="pokemon-grid">
+<div
+  class="pokemon-grid"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="500"
+  (scrolled)="onScroll()"
+>
   <app-pokemon-grid-item
     *ngFor="let pokemon of pokemons"
     [pokemon]="pokemon"
   ></app-pokemon-grid-item>
-  <!-- <p class="card-text">{{pokemon.description}}</p>
-      <a [routerLink]="['/pokemon', pokemon.id]" class="btn btn-primary">View</a> -->
+
+  <div *ngIf="isLoading">Loading...</div>
 </div>
+
+<!-- <p class="card-text">{{pokemon.description}}</p>
+      <a [routerLink]="['/pokemon', pokemon.id]" class="btn btn-primary">View</a> -->

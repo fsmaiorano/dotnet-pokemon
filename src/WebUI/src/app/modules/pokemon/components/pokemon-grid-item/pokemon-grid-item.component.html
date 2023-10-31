@@ -1,12 +1,10 @@
 <div class="pokemon-grid-item" *ngIf="pokemon; else elseBlock" #item>
-  <div class="pokemon-grid-item">
-    <img
-      [src]="pokemon.sprites.officialArtworkFrontDefault"
-      alt="{{ pokemon.name }}"
-    />
-  </div>
+  <img
+    [src]="pokemon.sprites.officialArtworkFrontDefault"
+    alt="{{ pokemon.name }}"
+  />
   <div class="pokemon-grid-item__bottom">
-    <p>#{{pokemon.externalId}}</p>
+    <p>#{{ pokemon.externalId }}</p>
     <p>{{ pokemon.name }}</p>
   </div>
 </div>

@@ -42,13 +42,13 @@ export class PokemonGridItemComponent implements AfterViewInit {
       const inputElement = this.input.nativeElement;
       if (inputElement) {
         inputElement.style.backgroundImage = `linear-gradient(90deg, ${colors[0]} 0%, ${colors[1]} 100%)`;
-        inputElement.style.boxShadow = `0px 0px 0 0px ${colors[0]}, -1px 0 28px 0 rgba(34, 33, 81, 0.01),
-           28px 28px 28px 0 rgba(34, 33, 81, 0.25);`;
+        // inputElement.style.boxShadow = `0px 0px 0 0px ${colors[0]}, -1px 0 28px 0 rgba(34, 33, 81, 0.01),
+        //    28px 28px 28px 0 rgba(34, 33, 81, 0.25);`;
 
-        inputElement.addEventListener('mouseenter', () => {
-          inputElement.style.boxShadow = `1px 1px 0 1px ${colors[1]}, -1px 0 28px 0 rgba(34, 33, 81, 0.01),
-                 54px 54px 28px -10px rgba(34, 33, 81, 0.15);`;
-        });
+        // inputElement.addEventListener('mouseenter', () => {
+        //   inputElement.style.boxShadow = `1px 1px 0 1px ${colors[1]}, -1px 0 28px 0 rgba(34, 33, 81, 0.01),
+        //          54px 54px 28px -10px rgba(34, 33, 81, 0.15);`;
+        // });
       }
     }
   }
