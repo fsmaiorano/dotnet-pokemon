@@ -24,6 +24,10 @@ export class PokemonGridItemComponent implements AfterViewInit {
     this.setBackgroundColor(colors);
   }
 
+  goToDetail = (pokemon: Pokemon) => {
+    console.log(pokemon);
+  };
+
   private getColors(): string[] {
     let types: string[] = [];
     this.pokemon?.types.map((pokemonType) => {

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -22,6 +23,7 @@ import { LoadingComponent } from './components/loading/loading.component';
     MatToolbarModule,
     FormsModule,
     ReactiveFormsModule,
+    MatRippleModule
   ],
   exports: [
     InfiniteScrollModule,
@@ -33,6 +35,7 @@ import { LoadingComponent } from './components/loading/loading.component';
     HeaderComponent,
     FormsModule,
     ReactiveFormsModule,
+    MatRippleModule
   ],
 })
 export class SharedModule {}

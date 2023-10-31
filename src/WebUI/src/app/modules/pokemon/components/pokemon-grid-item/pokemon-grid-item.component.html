@@ -1,4 +1,12 @@
-<div class="pokemon-grid-item" *ngIf="pokemon; else elseBlock" #item>
+<div
+  class="pokemon-grid-item"
+  mat-elevation-z4
+  matRipple
+  *ngIf="pokemon; else elseBlock"
+  #item
+  (click)="goToDetail(pokemon)"
+  F
+>
   <img
     [src]="pokemon.sprites.officialArtworkFrontDefault"
     alt="{{ pokemon.name }}"
