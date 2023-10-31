@@ -12,7 +12,7 @@ export class PokemonGridComponent implements OnInit {
   isLoading = true;
   hasNextPage = false;
   currentPage = 1;
-  itemsPerPage = 20;
+  itemsPerPage = 999999;
 
   constructor(private pokemonService: PokemonService) {}
 

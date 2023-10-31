@@ -1,0 +1,17 @@
+.header {
+  padding: 1.4rem;
+  position: sticky;
+
+  .header-row {
+    &__image {
+      width: 50px;
+      max-width: 50px;
+    }
+
+    &__title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+  }
+}

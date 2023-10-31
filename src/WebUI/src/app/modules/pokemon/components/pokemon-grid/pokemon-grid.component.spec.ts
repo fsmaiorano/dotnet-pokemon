@@ -8,7 +8,7 @@ describe('PokemonGridComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PokemonGridComponent]
+      declarations: [PokemonGridComponent],
     });
     fixture = TestBed.createComponent(PokemonGridComponent);
     component = fixture.componentInstance;
