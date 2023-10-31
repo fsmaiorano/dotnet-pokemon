@@ -28,10 +28,26 @@ $WebUI-theme: mat.define-light-theme((
   )
 ));
 
+@include mat.all-component-themes($WebUI-theme);
+
+$WebUI-dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $WebUI-primary,
+      accent: $WebUI-accent,
+      warn: $WebUI-warn,
+    ),
+  )
+);
+
+.darkMode {
+  @include mat.all-component-colors($WebUI-dark-theme);
+}
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($WebUI-theme);
+
 
 * {
   margin: 0;
