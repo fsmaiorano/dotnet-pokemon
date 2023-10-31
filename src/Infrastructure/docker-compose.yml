@@ -1,15 +1,23 @@
-﻿version: '3.8'
+﻿version: "3.8"
 
 services:
   postgres:
     container_name: database-pokemon-pg
     image: postgres:latest
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 128M
     ports:
       - 5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
-      # PGDATA: /data/postgres 
+      # PGDATA: /data/postgres
     # volumes:
-      # - ./data/postgres:/data/postgres
+    # - ./data/postgres:/data/postgres
