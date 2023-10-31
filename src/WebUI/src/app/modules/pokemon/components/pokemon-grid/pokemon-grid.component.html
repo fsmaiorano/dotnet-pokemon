@@ -9,8 +9,9 @@
     *ngFor="let pokemon of pokemons"
     [pokemon]="pokemon"
   ></app-pokemon-grid-item>
-
-  <div *ngIf="isLoading">Loading...</div>
+</div>
+<div class="loading-container" *ngIf="isLoading">
+  <mat-spinner diameter="50"></mat-spinner>
 </div>
 
 <!-- <p class="card-text">{{pokemon.description}}</p>

@@ -9,7 +9,7 @@ import { PokemonService } from '../../services/pokemon.service';
 })
 export class PokemonGridComponent implements OnInit {
   @Output() pokemons: Pokemon[] = [];
-  isLoading = false;
+  isLoading = true;
   currentPage = 1;
   itemsPerPage = 20;
 
@@ -52,7 +52,6 @@ export class PokemonGridComponent implements OnInit {
   };
 
   onScroll = () => {
-    console.log('scrolled!!');
     this.currentPage++;
     this.appendData();
   };
