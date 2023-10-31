@@ -10,6 +10,7 @@ import { PokemonService } from '../../services/pokemon.service';
 export class PokemonGridComponent implements OnInit {
   @Output() pokemons: Pokemon[] = [];
   isLoading = true;
+  hasNextPage = false;
   currentPage = 1;
   itemsPerPage = 20;
 
@@ -29,13 +30,15 @@ export class PokemonGridComponent implements OnInit {
         this.itemsPerPage
       )
     ).subscribe({
-      next: (response) => (this.pokemons = response.items),
+      next: (response) => {
+        this.pokemons = response.items;
+        this.hasNextPage = response.nextPage !== null;
+      },
       error: (err) => console.log(err),
       complete: () => this.toggleLoading(),
     });
   };
 
-  // this method will be called on scrolling the page
   appendData = async () => {
     this.toggleLoading();
     (
@@ -45,13 +48,21 @@ export class PokemonGridComponent implements OnInit {
       )
     ).subscribe({
       next: (response) =>
-        (this.pokemons = [...this.pokemons, ...response.items]),
+        {
+          this.hasNextPage = response.nextPage !== null;
+          this.pokemons = [...this.pokemons, ...response.items]
+        },
       error: (err) => console.log(err),
       complete: () => this.toggleLoading(),
     });
   };
 
   onScroll = () => {
+    if(!this.hasNextPage) {
+      this.toggleLoading();
+      return;
+    };
+
     this.currentPage++;
     this.appendData();
   };

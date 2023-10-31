@@ -10,9 +10,7 @@
     [pokemon]="pokemon"
   ></app-pokemon-grid-item>
 </div>
-<div class="loading-container" *ngIf="isLoading">
-  <mat-spinner diameter="50"></mat-spinner>
-</div>
+<app-loading *ngIf="isLoading"></app-loading>
 
 <!-- <p class="card-text">{{pokemon.description}}</p>
       <a [routerLink]="['/pokemon', pokemon.id]" class="btn btn-primary">View</a> -->
