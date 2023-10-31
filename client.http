@@ -19,3 +19,8 @@ Content-Type: application/json
 # @name Get pokemons with pagination
 GET {{baseUrl}}/pokemonWithPagination?pageNumber=1&pageSize=10
 Content-Type: application/json
+
+###
+# @name Get pokemon by external id
+GET {{baseUrl}}/pokemonByExternalId?externalId=1
+Content-Type: application/json

@@ -77,6 +77,18 @@ app.MapGet("/pokemon", async () =>
 
 }).WithName("GetPokemon").WithOpenApi();
 
+app.MapGet("/pokemonByExternalId", async (int? externalId) =>
+{
+    var query = new GetPokemonByIdQuery
+    {
+        ExternalId = externalId ?? 1
+    };
+
+    var response = await mediator.Send(query);
+    return Results.Ok(response);
+
+}).WithName("GetPokemonByExternalId").WithOpenApi();
+
 // "/pokemon/{pageNumber}/{pageSize}"
 app.MapGet("/pokemonWithPagination", async (int? pageNumber, int? pageSize) =>
 {
