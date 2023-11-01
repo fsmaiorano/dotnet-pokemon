@@ -1,5 +1,6 @@
 .header {
   padding-left: 1.4rem;
+  height: 64px;
 
   .header-row {
     display: flex;
@@ -9,9 +10,10 @@
     .header-row__logo {
       display: flex;
       align-items: center;
+      cursor: pointer;
 
       > .image {
-        width: 30px;
+        width: 20px;
         max-width: 30px;
       }
 
@@ -19,6 +21,7 @@
         font-size: 1.2rem;
         font-weight: 600;
         margin-left: 0.5rem;
+        color: white;
       }
     }
 

@@ -1,0 +1,27 @@
+.pokemon-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 64px);
+  width: 100%;
+
+  &__pills {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    > .pill {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 4px 8px;
+      margin: 4px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.5);
+      text-transform: capitalize;
+    }
+  }
+}

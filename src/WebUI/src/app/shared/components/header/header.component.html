@@ -1,9 +1,9 @@
 <mat-toolbar color="primary" class="header">
   <mat-toolbar-row class="header-row">
-    <div class="header-row__logo">
+    <a class="header-row__logo" [routerLink]="['/']">
       <img class="image" src="assets/images/logo.png" alt="logo" />
       <span class="title">Pokédex</span>
-    </div>
+    </a>
     <div class="header-row--darkmode">
       <mat-icon>brightness_5</mat-icon>
       <mat-slide-toggle [formControl]="toggleControl" />

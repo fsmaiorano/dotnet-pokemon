@@ -1,7 +1,6 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -20,13 +19,15 @@ $WebUI-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$WebUI-theme: mat.define-light-theme((
-  color: (
-    primary: $WebUI-primary,
-    accent: $WebUI-accent,
-    warn: $WebUI-warn,
+$WebUI-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $WebUI-primary,
+      accent: $WebUI-accent,
+      warn: $WebUI-warn,
+    ),
   )
-));
+);
 
 @include mat.all-component-themes($WebUI-theme);
 
@@ -47,7 +48,6 @@ $WebUI-dark-theme: mat.define-dark-theme(
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-
 
 * {
   margin: 0;
@@ -102,5 +102,11 @@ button {
   cursor: pointer;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

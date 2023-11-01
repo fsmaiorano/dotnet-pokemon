@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PokemonDetailComponent } from './modules/pokemon/components/pokemon-detail/pokemon-detail.component';
 import { PokemonGridComponent } from './modules/pokemon/components/pokemon-grid/pokemon-grid.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/pokemon' },
   { path: 'pokemon', component: PokemonGridComponent },
+  { path: 'pokemon/:id', component: PokemonDetailComponent },
   // { path: 'counter', component: CounterComponent },
   // { path: 'fetch-data', component: FetchDataComponent },
   // { path: 'login', component: LoginComponent },

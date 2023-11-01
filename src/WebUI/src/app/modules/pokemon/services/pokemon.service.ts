@@ -31,4 +31,20 @@ export class PokemonService {
       `${this.baseUrl}/pokemonWithPagination?pageNumber=${page}&pageSize=${pageSize}`
     );
   }
+
+  public async getPokemonByExternalId(
+    externalId: number
+  ): Promise<Observable<Pokemon>> {
+    return this.http.get<Pokemon>(
+      `${this.baseUrl}/pokemonByExternalId?externalId=${externalId}`
+    );
+  }
+
+  public async getPokemonDescription(
+    externalId: number
+  ): Promise<Observable<string[]>> {
+    return this.http.get<any>(
+      `${this.baseUrl}/pokemons/${externalId}/description`
+    );
+  }
 }

@@ -1,0 +1,13 @@
+<section class="pokemon-detail" #section>
+  <img [src]="pokemon.sprites.officialArtworkFrontDefault" alt="pokemon.name" />
+
+  <div class="pokemon-detail__pills">
+    <div class="pill" *ngFor="let type of pokemon.types">
+      {{ type.name }}
+    </div>
+  </div>
+
+  <!-- <mat-chip-row *ngFor="let type of pokemon.types">
+    {{ type.name }}
+  </mat-chip-row> -->
+</section>

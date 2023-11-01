@@ -5,6 +5,7 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Pokemon } from '../../models/pokemon.model';
 import { pokemonTypeColor } from '../../utils/pokemon-type-color';
 
@@ -17,7 +18,7 @@ export class PokemonGridItemComponent implements AfterViewInit {
   @Input() pokemon?: Pokemon;
   @ViewChild('item') input: ElementRef<HTMLInputElement> | undefined;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngAfterViewInit(): void {
     let colors = this.getColors();
@@ -26,6 +27,10 @@ export class PokemonGridItemComponent implements AfterViewInit {
 
   goToDetail = (pokemon: Pokemon) => {
     console.log(pokemon);
+
+    this.router.navigate(['pokemon', pokemon.externalId], {
+      state: { pokemon: pokemon },
+    });
   };
 
   private getColors(): string[] {
