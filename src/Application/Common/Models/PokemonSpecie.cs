@@ -37,5 +37,18 @@ public class PokemonSpecie
 
     [JsonPropertyName("evolves_from_species")]
     public GenericContent? EvolvesFromSpecies { get; set; }
+
+    [JsonPropertyName("flavor_text_entries")]
+    public List<FlavorTextEntriesObject>? FlavorTextEntries { get; set; }
+
+    public class FlavorTextEntriesObject
+    {
+        [JsonPropertyName("flavor_text")]
+        public string? FlavorText { get; set; }
+        [JsonPropertyName("language")]
+        public GenericContent? Language { get; set; }
+        [JsonPropertyName("version")]
+        public GenericContent? Version { get; set; }
+    }
 }
 
