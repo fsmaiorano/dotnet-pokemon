@@ -103,6 +103,18 @@ app.MapGet("/pokemonWithPagination", async (int? pageNumber, int? pageSize) =>
 
 }).WithName("GetPokemonWithPagination").WithOpenApi();
 
+app.MapGet("/pokemonDescriptionByExternalId", async (int? externalId) =>
+{
+    var query = new FetchSpecieCommand
+    {
+        PokemonExternalId = externalId ?? 0
+    };
+
+    var response = await mediator.Send(query);
+    return Results.Ok(response);
+
+}).WithName("GetPokemonDescriptionByExternalId").WithOpenApi();
+
 app.Run();
 
 public partial class Program { }

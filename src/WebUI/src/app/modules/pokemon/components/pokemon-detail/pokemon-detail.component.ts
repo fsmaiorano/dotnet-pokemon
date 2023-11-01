@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Pokemon } from '../../models/pokemon.model';
+import { Specie } from '../../models/specie.model';
 import { PokemonService } from '../../services/pokemon.service';
 import { pokemonTypeColor } from '../../utils/pokemon-type-color';
 
@@ -12,6 +13,8 @@ import { pokemonTypeColor } from '../../utils/pokemon-type-color';
 export class PokemonDetailComponent {
   isLoading = true;
   pokemon!: Pokemon;
+  specie!: Specie;
+  description: string | undefined;
   @ViewChild('section') input: ElementRef<HTMLInputElement> | undefined;
 
   constructor(private router: Router, private pokemonService: PokemonService) {
@@ -23,6 +26,7 @@ export class PokemonDetailComponent {
   ngAfterViewInit(): void {
     let colors = this.getColors();
     this.setBackgroundColor(colors);
+    this.getPokemonSpecieByExternalId(this.pokemon.externalId);
   }
 
   toggleLoading = () => (this.isLoading = !this.isLoading);
@@ -51,8 +55,35 @@ export class PokemonDetailComponent {
 
   getPokemonByExternalId = async (externalId: number) => {
     (await this.pokemonService.getPokemonByExternalId(externalId)).subscribe({
-      next: (response) => {
+      next: (response: Pokemon) => {
         this.pokemon = response;
+      },
+      error: (err) => console.log(err),
+      complete: () => (this.isLoading === true ? this.toggleLoading() : null),
+    });
+  };
+
+  getPokemonSpecieByExternalId = async (externalId: number) => {
+    (
+      await this.pokemonService.getPokemonSpecieByExternalId(externalId)
+    ).subscribe({
+      next: (response: Specie) => {
+        this.specie = response;
+
+        const englishDescriptions = response
+          .flavor_text_entries!.filter(
+            (description) => description.language!.name === 'en'
+          )
+          .map((description) =>
+            description.flavor_text?.replace(/[\r\n\f]/gm, ' ')
+          );
+
+        console.log(englishDescriptions);
+
+        const counter = englishDescriptions.length;
+
+        const random = Math.floor(Math.random() * counter);
+        this.description = englishDescriptions![random];
       },
       error: (err) => console.log(err),
       complete: () => (this.isLoading === true ? this.toggleLoading() : null),

@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { PaginatedList } from '../models/paginated-list';
 import { Pokemon } from '../models/pokemon.model';
+import { Specie } from '../models/specie.model';
 
 @Injectable()
 export class PokemonService {
@@ -19,7 +20,6 @@ export class PokemonService {
     //     // console.log(result);
     //     return result;
     //   });
-
     return this.http.get(`${this.baseUrl}/pokemon`);
   }
 
@@ -40,11 +40,11 @@ export class PokemonService {
     );
   }
 
-  public async getPokemonDescription(
+  public async getPokemonSpecieByExternalId(
     externalId: number
-  ): Promise<Observable<string[]>> {
+  ): Promise<Observable<Specie>> {
     return this.http.get<any>(
-      `${this.baseUrl}/pokemons/${externalId}/description`
+      `${this.baseUrl}/pokemonDescriptionByExternalId?externalId=${externalId}`
     );
   }
 }

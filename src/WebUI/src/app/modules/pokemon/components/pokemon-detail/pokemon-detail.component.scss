@@ -24,4 +24,14 @@
       text-transform: capitalize;
     }
   }
+
+  &__description {
+    > p {
+      font-size: 16px;
+      font-weight: 400;
+      margin: 2% 15%;
+      text-align: center;
+      line-height: 35px;
+    }
+  }
 }
