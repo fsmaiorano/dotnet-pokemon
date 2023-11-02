@@ -103,6 +103,10 @@ export class PokemonDetailComponent {
     return pokemonTypeColor(types);
   };
 
+  goBack = () => {
+    this.router.navigate(['']);
+  };
+
   private setBackgroundColor(colors: string[]): void {
     if (this.input) {
       const inputElement = this.input.nativeElement;

@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="header">
+<mat-toolbar color="primary" class="header" *ngIf="isVisible">
   <mat-toolbar-row class="header-row">
     <a class="header-row__logo" [routerLink]="['/']">
       <img class="image" src="assets/images/logo.png" alt="logo" />

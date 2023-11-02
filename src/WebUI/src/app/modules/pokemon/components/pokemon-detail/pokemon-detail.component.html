@@ -1,4 +1,7 @@
 <section class="pokemon-detail" #section>
+  <button mat-fab extended color="transparent" aria-label="Back to pokemon list" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon> Go back
+  </button>
   <img [src]="pokemon.sprites.officialArtworkFrontDefault" alt="pokemon.name" />
 
   <div class="pokemon-detail__pills">
