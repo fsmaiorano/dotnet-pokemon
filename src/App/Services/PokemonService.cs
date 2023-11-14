@@ -6,7 +6,7 @@ namespace App.Services
 {
     public interface IPokemonService
     {
-        Task<PaginatedList<PokemonEntity>> GetPokemon(int pageNumber, int pageSize);
+        Task<GenericResponse<Pokemon>> GetPokemon(int pageNumber, int pageSize);
     }
 
     public class PokemonService : IPokemonService
@@ -16,9 +16,9 @@ namespace App.Services
 
         }
 
-        public async Task<PaginatedList<PokemonEntity>> GetPokemon(int pageNumber, int pageSize)
+        public async Task<GenericResponse<Pokemon>> GetPokemon(int pageNumber, int pageSize)
         {
-            var response = await HttpHelper.GetAsync<PaginatedList<PokemonEntity>>($"http://localhost:5268/pokemonWithPagination?pageNumber={pageNumber}&pageSize={pageSize}");
+            var response = await HttpHelper.GetAsync<GenericResponse<Pokemon>>($"http://localhost:5268/pokemonWithPagination?pageNumber={pageNumber}&pageSize={pageSize}");
             return response;
         }
     }

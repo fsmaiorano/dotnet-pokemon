@@ -26,9 +26,11 @@ namespace App
 
             services.AddSingleton<HomeViewModel>();
             services.AddSingleton<MainViewModel>();
+            services.AddSingleton<PokemonGridViewModel>();
 
             services.AddSingleton<HomeView>();
             services.AddSingleton<MainPage>();
+            services.AddSingleton<PokemonGridView>();
 
             return services.BuildServiceProvider();
         }

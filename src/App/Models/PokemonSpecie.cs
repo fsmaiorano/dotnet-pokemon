@@ -1,0 +1,54 @@
+﻿using System.Text.Json.Serialization;
+
+namespace App.Models;
+public class PokemonSpecie
+{
+    [JsonPropertyName("id")]
+    public int? Id { get; set; }
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
+
+    [JsonPropertyName("base_happiness")]
+    public int? BaseHappiness { get; set; }
+
+    [JsonPropertyName("capture_rate")]
+    public int? CaptureRate { get; set; }
+
+    [JsonPropertyName("color")]
+    public GenericContent? Color { get; set; }
+
+    [JsonPropertyName("habitat")]
+    public GenericContent? Habitat { get; set; }
+
+    [JsonPropertyName("has_gender_differences")]
+    public bool HasGenderDifferences { get; set; }
+
+    [JsonPropertyName("hatch_counter")]
+    public int? HatchCounter { get; set; }
+
+    [JsonPropertyName("is_baby")]
+    public bool IsBaby { get; set; }
+
+    [JsonPropertyName("is_legendary")]
+    public bool IsLegendary { get; set; }
+
+    [JsonPropertyName("is_mythical")]
+    public bool IsMythical { get; set; }
+
+    [JsonPropertyName("evolves_from_species")]
+    public GenericContent? EvolvesFromSpecies { get; set; }
+
+    [JsonPropertyName("flavor_text_entries")]
+    public List<FlavorTextEntriesObject>? FlavorTextEntries { get; set; }
+
+    public class FlavorTextEntriesObject
+    {
+        [JsonPropertyName("flavor_text")]
+        public string? FlavorText { get; set; }
+        [JsonPropertyName("language")]
+        public GenericContent? Language { get; set; }
+        [JsonPropertyName("version")]
+        public GenericContent? Version { get; set; }
+    }
+}
+
