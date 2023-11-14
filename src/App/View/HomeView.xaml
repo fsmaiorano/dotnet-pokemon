@@ -8,6 +8,8 @@
                     VerticalOptions="Center" />
             <Button Text="Alert" Command="{Binding ShowAlertCommand}" HorizontalOptions="CenterAndExpand"
                     VerticalOptions="Center" />
+            <Label Text="{Binding PageTitle}}"  VerticalOptions="Center" HorizontalOptions="Center"/>
+            <Label Text="{Binding PageDescription}}" VerticalOptions="Center" HorizontalOptions="Center" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

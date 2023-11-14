@@ -1,6 +1,7 @@
-## About
+## Motivation
 
-This project is a micro api application using clean architecture and CQRS pattern, that allows get pokemons from [PokeApi](https://pokeapi.co/) and save in a database.
+This project is a minimal api application using clean architecture and CQRS pattern, that allows get pokemons from [PokeApi](https://pokeapi.co/) and save in a database.
+Using this structure, it is possible to
 
 ## Architecture
 Clean architecture is used to separate the application into layers. The layers are as follows: application, domain, and infrastructure. The application layer contains use-cases and all core implementations. The domain layer contains the business logic and
