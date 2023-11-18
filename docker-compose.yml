@@ -1,8 +1,18 @@
 ﻿version: "3.8"
 
 services:
+  api:
+    container_name: pokemon-api
+    build:
+      context: .
+      dockerfile: ./src/Api/Dockerfile
+    ports:
+      - 5268:5268
+      - 7114:7114
+    depends_on:
+      - postgres
   postgres:
-    container_name: database-pokemon-pg
+    container_name: pokemon-database-pg
     image: postgres:latest
     deploy:
       resources:
