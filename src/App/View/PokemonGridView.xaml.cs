@@ -10,7 +10,5 @@ public partial class PokemonGridView : ContentView
     {
         InitializeComponent();
         BindingContext = _viewModel = App.Current.Services.GetService<PokemonGridViewModel>();
-
-        _ = _viewModel.GetPokemonsPaginated();
     }
 }
