@@ -16,7 +16,7 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     this.router.events.subscribe((val) => {
-      this.isVisible = this.router.url === '/pokemon';
+      this.isVisible = this.router.url === '/keep';
     });
     this.toggleControl.valueChanges.subscribe((darkMode) => {
       this.isDarkMode.emit(darkMode ?? false);
