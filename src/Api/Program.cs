@@ -4,6 +4,7 @@ using Application.UseCases;
 using Application.UseCases.Queries;
 using Infrastructure;
 using MediatR;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,18 +54,6 @@ app.MapGet("/seed", async () =>
 
 }).WithName("Root").WithOpenApi();
 
-app.MapGet("/seed-firestore", async () =>
-{
-    var command = new CreateFirestoreCommand
-    {
-
-    };
-
-    await mediator.Send(command);
-    return Results.Ok();
-
-}).WithName("CreateFirestore").WithOpenApi();
-
 app.MapGet("/pokemon", async () =>
 {
     var query = new GetPokemonQuery
@@ -89,7 +78,6 @@ app.MapGet("/pokemonByExternalId", async (int? externalId) =>
 
 }).WithName("GetPokemonByExternalId").WithOpenApi();
 
-// "/pokemon/{pageNumber}/{pageSize}"
 app.MapGet("/pokemonWithPagination", async (int? pageNumber, int? pageSize) =>
 {
     var query = new GetPokemonWithPaginationQuery
@@ -114,6 +102,19 @@ app.MapGet("/pokemonDescriptionByExternalId", async (int? externalId) =>
     return Results.Ok(response);
 
 }).WithName("GetPokemonDescriptionByExternalId").WithOpenApi();
+
+bool isFirstRun = true;
+
+if (isFirstRun)
+{
+    var command = new HandlePokemonCommand
+    {
+
+    };
+
+    await mediator.Send(command);
+    isFirstRun = false;
+}
 
 app.Run();
 
