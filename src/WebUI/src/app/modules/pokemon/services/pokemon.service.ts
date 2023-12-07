@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { PaginatedList } from '../models/paginated-list';
 import { Pokemon } from '../models/pokemon.model';
@@ -10,7 +9,7 @@ import { Specie } from '../models/specie.model';
 export class PokemonService {
   private readonly baseUrl = 'http://localhost:5268';
 
-  constructor(private http: HttpClient, private store: AngularFirestore) {}
+  constructor(private http: HttpClient) {}
 
   public async getPokemon(): Promise<Observable<any>> {
     // this.store

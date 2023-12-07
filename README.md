@@ -1,29 +1,32 @@
 ## Motivation
 
 This project is a minimal api application using clean architecture and CQRS pattern, that allows get pokemons from [PokeApi](https://pokeapi.co/) and save in a database.
-Using this structure, it is possible to
+The WebUI renders a grid with the pokemons using infinite scroll. The user can click on a pokemon to see more details.
+
+This is a simple project to show how to use clean architecture and CQRS pattern.
 
 ## Architecture
+
 Clean architecture is used to separate the application into layers. The layers are as follows: application, domain, and infrastructure. The application layer contains use-cases and all core implementations. The domain layer contains the business logic and
 models. The infrastructure layer contains the database context and migrations.
 
 The implementation between the Api and the rest of the application is built with CQRS (Command and Query Responsibility Segregation), a pattern that separates read and update operations for a data store.
 
-
 ## Technologies Used
 - C#
-- .NET 7
+- NET 8
 - Entity Framework Core with InMemory Database
 - MediatR
 - AutoMapper
 - Docker Compose
 - Swagger
 - Firestore
+- Angular 17
 
 ## How to run
 
 ### Requirements
-- .NET 7
+- NET 8
 - Docker
 - dotnet tool install --global dotnet-ef
 
@@ -54,5 +57,7 @@ The implementation between the Api and the rest of the application is built with
 - [x] Implement swagger
 - [ ] Implement logging with serilog
 - [x] Implement error handling
+
+
 
 
