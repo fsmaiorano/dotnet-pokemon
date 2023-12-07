@@ -1,9 +1,8 @@
 ## Motivation
 
 This project is a minimal api application using clean architecture and CQRS pattern, that allows get pokemons from [PokeApi](https://pokeapi.co/) and save in a database.
-The WebUI renders a grid with the pokemons using infinite scroll. The user can click on a pokemon to see more details.
 
-This is a simple project to show how to use clean architecture and CQRS pattern.
+The WebUI renders a grid with the pokemons using infinite scroll. The user can click on a pokemon to see more details.
 
 ## Architecture
 
