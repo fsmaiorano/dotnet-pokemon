@@ -21,7 +21,11 @@ FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+RUN dotnet dev-certs https -ep /root/.aspnet/https/aspnetapp.pfx -p password
+RUN dotnet dev-certs https --trust
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY --from=publish /root/.aspnet/https/aspnetapp.pfx /https/aspnetapp.pfx
 ENTRYPOINT ["dotnet", "Api.dll"]
