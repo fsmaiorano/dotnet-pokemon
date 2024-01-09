@@ -19,14 +19,11 @@ services:
       context: .
       dockerfile: ./src/Api/Dockerfile
     ports:
-      - 5268:5268
-      - 7114:7114
+      - 5268:8080
     environment:
       - DOTNET_VERSION=8.0.0
       - DOTNET_DOWNLOAD_URL=https://dotnetcli.azureedge.net/dotnet/Runtime/8.0.0/dotnet-runtime-8.0.0-linux-x64.tar.gz
       - ASPNETCORE_ENVIRONMENT=Production
-      # - ASPNETCORE_URLS=https://+:443;http://+:80
-      # - ASPNETCORE_URLS=http://+:7114;https://+:5268
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     depends_on:

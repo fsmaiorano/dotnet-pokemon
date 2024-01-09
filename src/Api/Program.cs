@@ -35,7 +35,13 @@ app.UseCors(builder => builder
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsProduction())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(
+        options =>
+        {
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Pokemon API");
+            options.RoutePrefix = string.Empty;
+        }
+    );
 }
 
 app.UseHttpsRedirection();
