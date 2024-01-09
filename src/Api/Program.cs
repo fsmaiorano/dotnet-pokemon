@@ -3,8 +3,10 @@ using Application;
 using Application.UseCases;
 using Application.UseCases.Queries;
 using Infrastructure;
+using Infrastructure.Context;
 using MediatR;
 using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +47,12 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Enviro
 }
 
 app.UseHttpsRedirection();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetService<DataContext>();
+    dbContext!.Database.Migrate();
+}
 
 var mediator = app.Services.GetService(typeof(ISender)) as ISender ?? throw new NullReferenceException("Mediator is null");
 
