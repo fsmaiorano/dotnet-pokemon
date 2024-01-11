@@ -34,25 +34,18 @@ app.UseCors(builder => builder
     .AllowAnyMethod()
     .AllowAnyHeader());
 
-if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsProduction())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(
-        options =>
-        {
-            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Pokemon API");
-            options.RoutePrefix = string.Empty;
-        }
-    );
-}
+Console.WriteLine($"Environment: {app.Environment.EnvironmentName}");
+
+app.UseSwagger();
+app.UseSwaggerUI(
+    options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Pokemon API");
+        options.RoutePrefix = string.Empty;
+    }
+);
 
 app.UseHttpsRedirection();
-
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetService<DataContext>();
-    dbContext!.Database.Migrate();
-}
 
 var mediator = app.Services.GetService(typeof(ISender)) as ISender ?? throw new NullReferenceException("Mediator is null");
 

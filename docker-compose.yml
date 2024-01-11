@@ -20,6 +20,7 @@ services:
       dockerfile: ./src/Api/Dockerfile
     ports:
       - 5268:8080
+      - 7114:443
     environment:
       - DOTNET_VERSION=8.0.0
       - DOTNET_DOWNLOAD_URL=https://dotnetcli.azureedge.net/dotnet/Runtime/8.0.0/dotnet-runtime-8.0.0-linux-x64.tar.gz
