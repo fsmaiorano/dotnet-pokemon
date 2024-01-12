@@ -28,10 +28,18 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    restart: always
+    
   postgres:
     container_name: database-pokemon-pg
     image: postgres:latest
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     deploy:
       resources:
         limits:
@@ -47,5 +55,6 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
       # PGDATA: /data/postgres
-    # volumes:
-    # - ./data/postgres:/data/postgres
+    volumes:
+    - ./data/postgres:/data/postgres
+    - ./data/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
