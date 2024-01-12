@@ -3,6 +3,8 @@
 services:
   webui:
     container_name: pokemon-webui
+    links:
+      - api
     build:
       context: ./src/WebUI
       dockerfile: ./Dockerfile
@@ -18,9 +20,10 @@ services:
     build:
       context: .
       dockerfile: ./src/Api/Dockerfile
+    links:
+      - postgres
     ports:
       - 5268:8080
-      - 7114:443
     environment:
       - DOTNET_VERSION=8.0.0
       - DOTNET_DOWNLOAD_URL=https://dotnetcli.azureedge.net/dotnet/Runtime/8.0.0/dotnet-runtime-8.0.0-linux-x64.tar.gz
@@ -31,7 +34,6 @@ services:
       postgres:
         condition: service_healthy
     restart: always
-    
   postgres:
     container_name: database-pokemon-pg
     image: postgres:latest
