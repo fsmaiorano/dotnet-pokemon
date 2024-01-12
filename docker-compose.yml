@@ -53,7 +53,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: database-pokemon-pg
       # PGDATA: /data/postgres
     volumes:
     - ./data/postgres:/data/postgres
