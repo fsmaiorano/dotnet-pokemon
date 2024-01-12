@@ -47,6 +47,9 @@ app.UseSwaggerUI(
 
 app.UseHttpsRedirection();
 
+var connectionString = app.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine($"Connection string: {connectionString}");
+
 var mediator = app.Services.GetService(typeof(ISender)) as ISender ?? throw new NullReferenceException("Mediator is null");
 
 app.MapGet("/seed", async () =>

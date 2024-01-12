@@ -12,9 +12,8 @@ services:
       - api
     ports:
       - 4200:80
-    # volumes:
-    #   - ./angular:/project
-    #   - /project/node_modules
+    networks:
+      - fullstack
   api:
     container_name: pokemon-api
     build:
@@ -34,6 +33,8 @@ services:
       postgres:
         condition: service_healthy
     restart: always
+    networks:
+      - fullstack
   postgres:
     container_name: database-pokemon-pg
     image: postgres:latest
@@ -52,11 +53,17 @@ services:
           memory: 128M
     ports:
       - 5432:5432
+    networks:
+      - fullstack
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: database-pokemon-pg
       # PGDATA: /data/postgres
     volumes:
-    - ./data/postgres:/data/postgres
-    - ./data/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./data/postgres:/data/postgres
+      - ./data/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+networks:
+  fullstack:
+    driver: bridge
