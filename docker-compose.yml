@@ -1,4 +1,7 @@
 ﻿version: "3.9"
+networks:
+  docker_network:
+    driver: bridge
 
 services:
   webui:
@@ -11,31 +14,32 @@ services:
     depends_on:
       - api
     ports:
-      - 4200:80
+      - "4200:80"
     networks:
-      - fullstack
+      - docker_network
   api:
     container_name: pokemon-api
     build:
       context: .
       dockerfile: ./src/Api/Dockerfile
     links:
-      - postgres
+      - db
     ports:
-      - 5268:8080
+      - "5268:8080"
     environment:
       - DOTNET_VERSION=8.0.0
       - DOTNET_DOWNLOAD_URL=https://dotnetcli.azureedge.net/dotnet/Runtime/8.0.0/dotnet-runtime-8.0.0-linux-x64.tar.gz
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ConnectionStrings__DefaultConnection="User ID=postgres;Password=postgres;Server=db;Port=5432;Database=database-pokemon-pg; Integrated Security=true;Pooling=true;"
     depends_on:
-      postgres:
+      db:
         condition: service_healthy
     restart: always
     networks:
-      - fullstack
-  postgres:
+      - docker_network
+  db:
     container_name: database-pokemon-pg
     image: postgres:latest
     healthcheck:
@@ -52,9 +56,7 @@ services:
           cpus: "0.25"
           memory: 128M
     ports:
-      - 5432:5432
-    networks:
-      - fullstack
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -63,7 +65,5 @@ services:
     volumes:
       - ./data/postgres:/data/postgres
       - ./data/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
-
-networks:
-  fullstack:
-    driver: bridge
+    networks:
+      - docker_network
