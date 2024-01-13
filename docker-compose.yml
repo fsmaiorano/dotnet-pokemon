@@ -32,7 +32,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-      - ConnectionStrings__DefaultConnection="User ID=postgres;Password=postgres;Server=db;Port=5432;Database=database-pokemon-pg; Integrated Security=true;Pooling=true;"
+      - DockerCompose=true
+      - DockerCompose_DefaultConnection="User ID=postgres;Password=postgres;Server=db;Port=5432;Database=pokemon_database;"
     depends_on:
       db:
         condition: service_healthy
@@ -40,7 +41,7 @@ services:
     networks:
       - docker_network
   db:
-    container_name: database-pokemon-pg
+    container_name: pokemon-database
     image: postgres:latest
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -60,7 +61,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: database-pokemon-pg
+      POSTGRES_DB: pokemon_database
       # PGDATA: /data/postgres
     volumes:
       - ./data/postgres:/data/postgres

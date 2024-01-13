@@ -53,24 +53,51 @@ public class DataContext : DbContext, IDataContext
     /// </summary>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
-
-        if (AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))
-            optionsBuilder.UseInMemoryDatabase("ApplicationDb");
-        else
+        try
         {
-            var solutionPath = GetSolutionPath();
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(solutionPath.FullName)
-                .AddJsonFile("src/Api/appsettings.json", optional: false)
-                .Build();
+            optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
 
-            var connectionString = builder.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseNpgsql(connectionString,
-                builder => builder.MigrationsAssembly(typeof(DataContext).Assembly.FullName));
+            if (AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))
+                optionsBuilder.UseInMemoryDatabase("ApplicationDb");
+            else
+            {
+                var solutionPath = GetSolutionPath();
+
+                var connectionString = string.Empty;
+                Console.WriteLine($"DockerCompose Environment: {Environment.GetEnvironmentVariable("DockerCompose")}");
+                if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DefaultConnection")) && Environment.GetEnvironmentVariable("DockerCompose") == "false")
+                {
+                    Console.WriteLine($"Using appsettings.json to get connection string");
+                    var builder = new ConfigurationBuilder()
+                        .SetBasePath(solutionPath.FullName)
+                        .AddJsonFile("src/Api/appsettings.json", optional: false)
+                        .Build();
+
+                    Environment.SetEnvironmentVariable("DefaultConnection", builder.GetConnectionString("DefaultConnection"));
+                    connectionString = builder.GetConnectionString("DefaultConnection");
+                }
+                else
+                {
+                    Console.WriteLine($"Using Environment Variable to get connection string");
+
+                    //connectionString = Environment.GetEnvironmentVariable("DockerCompose_DefaultConnection");
+                    connectionString = "User ID=postgres;Password=postgres;Server=db;Port=5432;Database=pokemon_database;";
+                    Environment.SetEnvironmentVariable("DefaultConnection", connectionString);
+
+                    Console.WriteLine($"Connection string: {connectionString}");
+                }
+
+                Console.WriteLine($"Connection string to be used: {connectionString}");
+                optionsBuilder.UseNpgsql(connectionString,
+                    builder => builder.MigrationsAssembly(typeof(DataContext).Assembly.FullName));
+            }
+
+            base.OnConfiguring(optionsBuilder);
         }
-
-        base.OnConfiguring(optionsBuilder);
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

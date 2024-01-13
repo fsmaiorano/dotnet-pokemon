@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using System.Text.Json.Nodes;
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Helpers;
 using AutoMapper;
@@ -6,6 +7,7 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Application.UseCases;
 
@@ -61,6 +63,7 @@ public class FetchAbilityCommandHandler : IRequestHandler<FetchAbilityCommand>
         }
         catch (Exception ex)
         {
+            Console.WriteLine(JsonConvert.SerializeObject(ex));
             _logger.LogInformation($"fetchAbility exception - {DateTime.Now} - {ex.Message}");
         }
         finally
